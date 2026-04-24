@@ -88,3 +88,22 @@ def test_top_products(monkeypatch):
     response = client.get("/top_products?limit=1")
     assert response.status_code == 200
     assert response.json()["rows"][0]["product_name"] == "Cable"
+
+
+def test_overview_metrics(monkeypatch):
+    monkeypatch.setattr(
+        insights_route,
+        "overview_metrics",
+        lambda: {
+            "avg_predicted_discount": 30.0,
+            "avg_sentiment_score": 0.5,
+            "model_r2": 0.9,
+            "rag_factuality_rate": None,
+            "rag_status": "Needs evaluation set",
+            "products_scored": 10,
+            "sentiment_sample_size": 10,
+        },
+    )
+    response = client.get("/overview_metrics")
+    assert response.status_code == 200
+    assert response.json()["avg_predicted_discount"] == 30.0

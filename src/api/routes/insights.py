@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException
 
 from src.monitoring.drift import drift_report
+from src.models.overview import overview_metrics
 from src.models.top_products import top_products
 from src.segments.clustering import segment_summary
 from src.sentiment.analyzer import analyze_product, sentiment_heatmap
@@ -26,6 +27,11 @@ def heatmap(top_n: int = 5) -> dict:
 @router.get("/top_products")
 def top_products_route(limit: int = 5) -> dict:
     return top_products(limit=limit)
+
+
+@router.get("/overview_metrics")
+def overview_metrics_route() -> dict:
+    return overview_metrics()
 
 
 @router.get("/segments")

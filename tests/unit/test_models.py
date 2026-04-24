@@ -1,4 +1,5 @@
 from src.models.predict import prepare_input
+from src.models.overview import overview_metrics
 from src.models.top_products import _flag
 from src.pipeline.features import FEATURE_COLUMNS
 
@@ -37,3 +38,36 @@ def test_top_product_flag_rules():
     assert _flag(2, 0.4) == ("Good", "green")
     assert _flag(20, 0.4) == ("Review", "red")
     assert _flag(8, 0.1) == ("Watch", "yellow")
+
+
+def test_overview_metrics_shape(monkeypatch):
+    import pandas as pd
+
+    from src.models import overview as overview_module
+
+    df = pd.DataFrame(
+        {
+            "product_id": ["p1"],
+            "product_name": ["Cable"],
+            "category": ["electronics"],
+            "actual_price": [100.0],
+            "discounted_price": [80.0],
+            "discount_percentage": [20.0],
+            "rating": [4.2],
+            "rating_count": [10],
+            "about_product": ["Good quality cable"],
+            "review_title": ["Good"],
+            "review_content": ["Good value"],
+        }
+    )
+
+    class FakeModel:
+        def predict(self, X):
+            return [25.0]
+
+    monkeypatch.setattr(overview_module, "ingest", lambda: df)
+    monkeypatch.setattr(overview_module, "load_model", lambda: FakeModel())
+    monkeypatch.setattr(overview_module, "analyze_text", lambda text: {"sentiment_score": 0.5})
+    metrics = overview_metrics(sentiment_sample=1)
+    assert metrics["avg_predicted_discount"] == 25.0
+    assert metrics["avg_sentiment_score"] == 0.5

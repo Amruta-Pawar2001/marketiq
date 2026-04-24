@@ -75,6 +75,7 @@ Live:
 - `/predict_demand`
 - `/answer_question`
 - `/rag_trace`
+- `/overview_metrics`
 - `/top_products`
 - `/sentiment/{product_id}`
 - `/sentiment_heatmap`
@@ -85,7 +86,7 @@ Live:
 
 Planned/demo presentation areas:
 
-- Overview aggregate cards and trend charts
+- Trend charts
 - Revenue trend and top movers
 - SHAP bars in the prediction view
 - Weekly sentiment trend
