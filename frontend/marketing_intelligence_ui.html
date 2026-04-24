@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarketIQ — Marketing Data Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0e14;
+    --surface: #12151e;
+    --surface2: #181c28;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --accent: #4fffb0;
+    --accent2: #7b61ff;
+    --accent3: #ff6b6b;
+    --accent4: #ffd166;
+    --text: #e8eaf0;
+    --muted: #7a7f94;
+    --dim: #3a3f52;
+    --font-head: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+    --font-serif: 'Lora', serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-head); min-height: 100vh; overflow-x: hidden; }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed; left: 0; top: 0; bottom: 0; width: 220px;
+    background: var(--surface); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; z-index: 100; padding: 24px 0;
+  }
+  .logo { padding: 0 20px 24px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+  .logo-mark { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+  .logo-mark span { color: var(--accent); }
+  .logo-sub { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+  .nav-section { padding: 0 12px; margin-bottom: 8px; }
+  .nav-label { font-family: var(--font-mono); font-size: 9px; color: var(--dim); letter-spacing: 2px; text-transform: uppercase; padding: 4px 8px; margin-bottom: 4px; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+    border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500;
+    color: var(--muted); transition: all 0.15s; margin-bottom: 2px;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+  .nav-item.active { background: rgba(79,255,176,0.08); color: var(--accent); }
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.5; flex-shrink: 0; }
+  .nav-item.active .nav-dot { opacity: 1; }
+  .sidebar-footer { margin-top: auto; padding: 16px 20px; border-top: 1px solid var(--border); }
+  .model-badge { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+  .model-status { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  /* MAIN */
+  .main { margin-left: 220px; padding: 32px 36px; min-height: 100vh; }
+  .page { display: none; }
+  .page.active { display: block; animation: fadein 0.2s ease; }
+  @keyframes fadein { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+  /* TOPBAR */
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+  .page-title { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+  .page-title span { color: var(--accent); }
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+  .chip {
+    font-family: var(--font-mono); font-size: 11px; padding: 6px 12px;
+    border: 1px solid var(--border2); border-radius: 20px; color: var(--muted);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--accent); }
+  .chip.primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 500; }
+
+  /* METRIC CARDS */
+  .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+  .metric-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px; position: relative; overflow: hidden;
+  }
+  .metric-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background: var(--accent-bar, var(--accent)); }
+  .metric-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .metric-value { font-size: 28px; font-weight: 800; letter-spacing: -1px; }
+  .metric-delta { font-family: var(--font-mono); font-size: 11px; margin-top: 4px; }
+  .delta-up { color: var(--accent); }
+  .delta-down { color: var(--accent3); }
+
+  /* GRID LAYOUTS */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .wide-narrow { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .narrow-wide { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; margin-bottom: 16px; }
+
+  /* PANELS */
+  .panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 22px;
+  }
+  .panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .panel-title { font-size: 13px; font-weight: 700; letter-spacing: 0.2px; }
+  .panel-tag { font-family: var(--font-mono); font-size: 10px; padding: 3px 8px; border-radius: 10px; }
+  .tag-ml { background: rgba(79,255,176,0.1); color: var(--accent); }
+  .tag-nlp { background: rgba(123,97,255,0.1); color: var(--accent2); }
+  .tag-data { background: rgba(255,209,102,0.1); color: var(--accent4); }
+  .tag-ops { background: rgba(255,107,107,0.1); color: var(--accent3); }
+
+  /* CHARTS (CSS-drawn) */
+  .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 90px; margin-top: 8px; }
+  .bar { flex: 1; border-radius: 4px 4px 0 0; transition: height 0.6s cubic-bezier(0.34,1.56,0.64,1); cursor: pointer; position: relative; }
+  .bar:hover { opacity: 0.8; }
+  .bar-label { font-family: var(--font-mono); font-size: 9px; color: var(--muted); text-align: center; margin-top: 4px; }
+  .bar-labels { display: flex; gap: 6px; }
+  .bar-labels > div { flex: 1; }
+
+  .sparkline { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
+  .spark { flex: 1; border-radius: 2px; }
+
+  /* SENTIMENT HEATMAP */
+  .heatmap { display: grid; gap: 3px; }
+  .hm-cell { height: 28px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 10px; font-weight: 500; cursor: pointer; transition: transform 0.1s; }
+  .hm-cell:hover { transform: scale(1.05); }
+
+  /* PRODUCT TABLE */
+  .prod-table { width: 100%; border-collapse: collapse; }
+  .prod-table th { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; padding: 8px 0; text-align: left; border-bottom: 1px solid var(--border); }
+  .prod-table td { padding: 10px 0; font-size: 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .prod-table tr:last-child td { border-bottom: none; }
+  .score-bar { height: 4px; border-radius: 2px; background: var(--border); position: relative; width: 60px; }
+  .score-fill { height: 100%; border-radius: 2px; background: var(--accent); }
+  .badge { font-family: var(--font-mono); font-size: 10px; padding: 2px 8px; border-radius: 10px; display: inline-block; }
+  .b-green { background: rgba(79,255,176,0.1); color: var(--accent); }
+  .b-yellow { background: rgba(255,209,102,0.1); color: var(--accent4); }
+  .b-red { background: rgba(255,107,107,0.1); color: var(--accent3); }
+
+  /* AI ASSISTANT */
+  .chat-area { display: flex; flex-direction: column; gap: 12px; max-height: 340px; overflow-y: auto; padding-right: 4px; margin-bottom: 14px; }
+  .chat-area::-webkit-scrollbar { width: 3px; }
+  .chat-area::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 2px; }
+  .msg { max-width: 85%; }
+  .msg-user { align-self: flex-end; }
+  .msg-ai { align-self: flex-start; }
+  .msg-bubble {
+    padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.55;
+  }
+  .msg-user .msg-bubble { background: var(--accent2); color: #fff; border-radius: 12px 12px 2px 12px; }
+  .msg-ai .msg-bubble { background: var(--surface2); border: 1px solid var(--border); border-radius: 2px 12px 12px 12px; }
+  .msg-meta { font-family: var(--font-mono); font-size: 9px; color: var(--muted); margin-top: 4px; }
+  .msg-user .msg-meta { text-align: right; }
+  .source-pill { display: inline-flex; align-items: center; gap: 4px; background: rgba(79,255,176,0.08); border: 1px solid rgba(79,255,176,0.2); border-radius: 20px; padding: 2px 8px; font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-top: 6px; margin-right: 4px; }
+  .chat-input-row { display: flex; gap: 8px; }
+  .chat-input {
+    flex: 1; background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 10px; padding: 10px 14px; font-family: var(--font-mono);
+    font-size: 12px; color: var(--text); outline: none;
+  }
+  .chat-input:focus { border-color: var(--accent); }
+  .send-btn {
+    background: var(--accent); color: #000; border: none;
+    border-radius: 10px; padding: 10px 16px; font-family: var(--font-head);
+    font-size: 12px; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
+  }
+  .send-btn:hover { opacity: 0.85; }
+
+  /* PREDICTION TOOL */
+  .pred-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .field-group label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); display: block; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
+  .field-group input, .field-group select {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border2);
+    border-radius: 8px; padding: 9px 12px; font-family: var(--font-mono);
+    font-size: 12px; color: var(--text); outline: none; transition: border-color 0.15s;
+  }
+  .field-group input:focus, .field-group select:focus { border-color: var(--accent); }
+  .field-group select option { background: var(--surface2); }
+  .pred-result {
+    background: linear-gradient(135deg, rgba(79,255,176,0.05), rgba(123,97,255,0.05));
+    border: 1px solid rgba(79,255,176,0.2); border-radius: 12px; padding: 18px 20px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .pred-number { font-size: 48px; font-weight: 800; color: var(--accent); letter-spacing: -2px; }
+  .pred-label { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .shap-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .shap-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); width: 100px; flex-shrink: 0; }
+  .shap-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; }
+  .shap-bar { height: 100%; border-radius: 3px; }
+  .shap-val { font-family: var(--font-mono); font-size: 10px; color: var(--muted); width: 36px; text-align: right; }
+
+  /* SEGMENTS */
+  .seg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .seg-card { border: 1px solid var(--border); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.15s; }
+  .seg-card:hover { border-color: var(--border2); }
+  .seg-name { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .seg-count { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+  .seg-stats { display: flex; flex-direction: column; gap: 4px; }
+  .seg-stat { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; }
+  .seg-stat span:first-child { color: var(--muted); }
+
+  /* MONITORING */
+  .monitor-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .monitor-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .mon-title { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .mon-value { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+  .gauge { height: 6px; background: var(--border); border-radius: 3px; margin-top: 8px; }
+  .gauge-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+
+  /* PIPELINE */
+  .pipeline-steps { display: flex; gap: 0; align-items: stretch; }
+  .pipe-step { flex: 1; background: var(--surface2); border: 1px solid var(--border); padding: 14px 12px; position: relative; }
+  .pipe-step:first-child { border-radius: 10px 0 0 10px; }
+  .pipe-step:last-child { border-radius: 0 10px 10px 0; }
+  .pipe-step:not(:last-child)::after { content: '›'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; z-index: 1; }
+  .pipe-name { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
+  .pipe-tech { font-family: var(--font-mono); font-size: 9px; color: var(--muted); }
+  .pipe-status { width: 7px; height: 7px; border-radius: 50%; margin-bottom: 8px; }
+  .status-ok { background: var(--accent); }
+  .status-warn { background: var(--accent4); }
+  .status-err { background: var(--accent3); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">Market<span>IQ</span></div>
+    <div class="logo-sub">Intelligence Platform</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Analytics</div>
+    <div class="nav-item active" onclick="showPage('dashboard', this)"><div class="nav-dot"></div> Overview</div>
+    <div class="nav-item" onclick="showPage('prediction', this)"><div class="nav-dot"></div> Predict discount</div>
+    <div class="nav-item" onclick="showPage('sentiment', this)"><div class="nav-dot"></div> Sentiment</div>
+    <div class="nav-item" onclick="showPage('segments', this)"><div class="nav-dot"></div> Segments</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">AI Assistant</div>
+    <div class="nav-item" onclick="showPage('assistant', this)"><div class="nav-dot"></div> Ask MarketIQ</div>
+    <div class="nav-item" onclick="showPage('rag', this)"><div class="nav-dot"></div> RAG explorer</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Platform</div>
+    <div class="nav-item" onclick="showPage('pipeline', this)"><div class="nav-dot"></div> Data pipeline</div>
+    <div class="nav-item" onclick="showPage('monitoring', this)"><div class="nav-dot"></div> Monitoring</div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="model-badge">Active stack</div>
+    <div class="model-badge" style="color:var(--text);font-weight:500;margin-top:2px;">XGBoost + OpenAI RAG</div>
+    <div class="model-status">
+      <div class="pulse"></div>
+      <span class="model-badge">API live · 98ms avg</span>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- ═══ PAGE: DASHBOARD ═══ -->
+  <div class="page active" id="page-dashboard">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Overview <span>dashboard</span></div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Amazon Sales Dataset · 1,465 products · Updated 2h ago</div>
+      </div>
+      <div class="topbar-actions">
+        <div class="chip">Last 30 days</div>
+        <div class="chip primary">+ New analysis</div>
+      </div>
+    </div>
+
+    <div class="metric-row">
+      <div class="metric-card" style="--accent-bar:var(--accent)">
+        <div class="metric-label">Avg predicted discount</div>
+        <div class="metric-value">34<span style="font-size:16px;color:var(--muted)">%</span></div>
+        <div class="metric-delta delta-up">↑ 2.4% vs last month</div>
+      </div>
+      <div class="metric-card" style="--accent-bar:var(--accent2)">
+        <div class="metric-label">Avg sentiment score</div>
+        <div class="metric-value">0.71</div>
+        <div class="metric-delta delta-up">↑ 0.03 improvement</div>
+      </div>
+      <div class="metric-card" style="--accent-bar:var(--accent4)">
+        <div class="metric-label">Model accuracy (R²)</div>
+        <div class="metric-value">0.87</div>
+        <div class="metric-delta delta-up">↑ 0.05 since last retrain</div>
+      </div>
+      <div class="metric-card" style="--accent-bar:var(--accent3)">
+        <div class="metric-label">RAG factuality rate</div>
+        <div class="metric-value">91<span style="font-size:16px;color:var(--muted)">%</span></div>
+        <div class="metric-delta delta-down">↓ 1.2% drift detected</div>
+      </div>
+    </div>
+
+    <div class="wide-narrow">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Discount distribution by category</div>
+          <div class="panel-tag tag-ml">ML model</div>
+        </div>
+        <div class="bar-chart" id="cat-bars"></div>
+        <div class="bar-labels" id="cat-labels"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Revenue trend</div>
+          <div class="panel-tag tag-data">Historical</div>
+        </div>
+        <div class="sparkline" id="sparkline"></div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:8px;">Last 24 weeks · all categories</div>
+        <div style="margin-top:14px;">
+          <div style="font-size:11px;font-weight:700;margin-bottom:8px;">Top movers this week</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;"><span style="color:var(--muted)">Electronics</span><span class="delta-up">+14.2%</span></div>
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;"><span style="color:var(--muted)">Home & Kitchen</span><span class="delta-up">+9.7%</span></div>
+            <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;"><span style="color:var(--muted)">Clothing</span><span class="delta-down">-3.1%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Top products · predicted vs actual discount</div>
+          <div class="panel-tag tag-ml">XGBoost</div>
+        </div>
+        <table class="prod-table">
+          <thead><tr><th>Product</th><th>Actual %</th><th>Predicted %</th><th>Sentiment</th><th>Flag</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--text);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">USB-C Hub 7-in-1</td><td>45%</td><td>43%</td><td><div class="score-bar"><div class="score-fill" style="width:82%"></div></div></td><td><span class="badge b-green">Good</span></td></tr>
+            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Yoga Mat Premium</td><td>30%</td><td>38%</td><td><div class="score-bar"><div class="score-fill" style="width:61%"></div></div></td><td><span class="badge b-yellow">Drift</span></td></tr>
+            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Stainless Steel Bottle</td><td>22%</td><td>21%</td><td><div class="score-bar"><div class="score-fill" style="width:75%"></div></div></td><td><span class="badge b-green">Good</span></td></tr>
+            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Bluetooth Speaker</td><td>60%</td><td>47%</td><td><div class="score-bar"><div class="score-fill" style="width:44%"></div></div></td><td><span class="badge b-red">Review</span></td></tr>
+            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Laptop Stand Adj.</td><td>35%</td><td>34%</td><td><div class="score-bar"><div class="score-fill" style="width:88%"></div></div></td><td><span class="badge b-green">Good</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Customer segment overview</div>
+          <div class="panel-tag tag-ml">K-Means</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(79,255,176,0.12);border:1px solid rgba(79,255,176,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--accent);">A</div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:700">Champions · 18%</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">High RFM · avg CLV ₹12,400</div>
+            </div>
+            <div class="sparkline" style="height:28px;width:60px;" id="sp-a"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(123,97,255,0.12);border:1px solid rgba(123,97,255,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--accent2);">B</div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:700">Loyal customers · 29%</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Frequent · avg CLV ₹6,200</div>
+            </div>
+            <div class="sparkline" style="height:28px;width:60px;" id="sp-b"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(255,209,102,0.12);border:1px solid rgba(255,209,102,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--accent4);">C</div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:700">At risk · 21%</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Declining frequency</div>
+            </div>
+            <div class="sparkline" style="height:28px;width:60px;" id="sp-c"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:8px;background:rgba(255,107,107,0.12);border:1px solid rgba(255,107,107,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--accent3);">D</div>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:700">New / cold · 32%</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Low engagement · 1-2 orders</div>
+            </div>
+            <div class="sparkline" style="height:28px;width:60px;" id="sp-d"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: PREDICT DISCOUNT ═══ -->
+  <div class="page" id="page-prediction">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Predict <span>discount</span></div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">XGBoost regression · RMSE 3.2 · R² 0.87</div>
+      </div>
+      <div class="topbar-actions"><div class="chip">XGBoost v1</div></div>
+    </div>
+
+    <div class="wide-narrow">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-title">Product input features</div>
+          <div class="panel-tag tag-ml">XGBoost</div>
+        </div>
+        <div class="pred-form">
+          <div class="field-group"><label>Category</label>
+            <select id="cat-sel"><option>Electronics</option><option>Home & Kitchen</option><option>Sports</option><option>Clothing</option><option>Books</option></select>
+          </div>
+          <div class="field-group"><label>Actual price (₹)</label><input type="number" id="f-price" value="2499" /></div>
+          <div class="field-group"><label>Rating (1–5)</label><input type="number" id="f-rating" value="4.2" step="0.1" min="1" max="5" /></div>
+          <div class="field-group"><label>No. of ratings</label><input type="number" id="f-reviews" value="1240" /></div>
+          <div class="field-group"><label>Brand tier</label>
+            <select id="brand-tier"><option>Premium</option><option>Mid-range</option><option>Budget</option></select>
+          </div>
+          <div class="field-group"><label>Stock level</label>
+            <select><option>High</option><option>Medium</option><option>Low</option></select>
+          </div>
+        </div>
+        <button class="send-btn" style="width:100%;padding:12px;" onclick="runPrediction()">Run prediction</button>
+
+        <div class="pred-result" id="pred-result" style="margin-top:16px;">
+          <div>
+            <div class="pred-number" id="pred-val">34%</div>
+            <div class="pred-label">Recommended discount</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:11px;font-weight:700;margin-bottom:10px;">SHAP feature importance</div>
+            <div class="shap-row"><span class="shap-label">Price</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:85%;background:var(--accent)"></div></div><span class="shap-val">+0.42</span></div>
+            <div class="shap-row"><span class="shap-label">Rating</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:62%;background:var(--accent2)"></div></div><span class="shap-val">+0.31</span></div>
+            <div class="shap-row"><span class="shap-label">Reviews</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:48%;background:var(--accent4)"></div></div><span class="shap-val">+0.24</span></div>
+            <div class="shap-row"><span class="shap-label">Category</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:30%;background:var(--accent3)"></div></div><span class="shap-val">−0.15</span></div>
+            <div class="shap-row"><span class="shap-label">Brand tier</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:18%;background:var(--dim)"></div></div><span class="shap-val">−0.09</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Model health</div><div class="panel-tag tag-ops">XGBoost</div></div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">RMSE</span><span>3.21</span></div><div class="gauge"><div class="gauge-fill" style="width:68%;background:var(--accent)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">MAE</span><span>2.44</span></div><div class="gauge"><div class="gauge-fill" style="width:76%;background:var(--accent2)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">R²</span><span>0.87</span></div><div class="gauge"><div class="gauge-fill" style="width:87%;background:var(--accent4)"></div></div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">API endpoint</div><div class="panel-tag tag-ops">FastAPI</div></div>
+          <div style="background:var(--bg);border-radius:8px;padding:12px;font-family:var(--font-mono);font-size:11px;color:var(--accent);line-height:1.8;">
+            POST /predict_discount<br>
+            <span style="color:var(--muted)">→ {"discount_pct": 34,</span><br>
+            <span style="color:var(--muted)">&nbsp;&nbsp;"confidence": 0.89,</span><br>
+            <span style="color:var(--muted)">&nbsp;&nbsp;"shap": {...}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: SENTIMENT ═══ -->
+  <div class="page" id="page-sentiment">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Sentiment <span>analysis</span></div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Aspect-based · 12,840 reviews processed</div>
+      </div>
+      <div class="topbar-actions"><div class="chip">Fine-tuned BERT</div></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:16px;">
+      <div class="panel-head"><div class="panel-title">Sentiment heatmap — product × attribute</div><div class="panel-tag tag-nlp">NLP</div></div>
+      <div style="overflow-x:auto;">
+        <div id="heatmap-container"></div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Recent review insights</div><div class="panel-tag tag-nlp">RAG summary</div></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="padding:12px;background:rgba(79,255,176,0.05);border:1px solid rgba(79,255,176,0.15);border-radius:10px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:4px;">POSITIVE · USB-C Hub</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--muted);">"Customers consistently praise the <strong style="color:var(--text)">build quality</strong> and <strong style="color:var(--text)">charging speed</strong>. 87% mention fast delivery."</div>
+          </div>
+          <div style="padding:12px;background:rgba(255,107,107,0.05);border:1px solid rgba(255,107,107,0.15);border-radius:10px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent3);margin-bottom:4px;">NEGATIVE · Bluetooth Speaker</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--muted);">"Recurring complaints about <strong style="color:var(--text)">battery life</strong> (avg 3.2/5) and <strong style="color:var(--text)">connectivity drops</strong> after 3 months."</div>
+          </div>
+          <div style="padding:12px;background:rgba(255,209,102,0.05);border:1px solid rgba(255,209,102,0.15);border-radius:10px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent4);margin-bottom:4px;">MIXED · Yoga Mat</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--muted);">"Split opinion on <strong style="color:var(--text)">thickness</strong> — premium buyers prefer 6mm+. Price-to-value scores high."</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Sentiment over time</div><div class="panel-tag tag-nlp">Trend</div></div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:12px;">Weekly average · all products</div>
+        <div class="bar-chart" id="sent-bars" style="height:120px;"></div>
+        <div class="bar-labels" id="sent-labels"></div>
+        <div style="margin-top:14px;display:flex;gap:16px;">
+          <div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Positive</div><div style="font-size:18px;font-weight:800;color:var(--accent)">71%</div></div>
+          <div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Neutral</div><div style="font-size:18px;font-weight:800;color:var(--accent4)">18%</div></div>
+          <div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Negative</div><div style="font-size:18px;font-weight:800;color:var(--accent3)">11%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: SEGMENTS ═══ -->
+  <div class="page" id="page-segments">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Customer <span>segments</span></div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">RFM + K-Means clustering · 6 segments identified</div>
+      </div>
+      <div class="topbar-actions"><div class="chip">K-Means · k=6</div></div>
+    </div>
+    <div class="seg-grid" style="margin-bottom:16px;">
+      <div class="seg-card" style="border-color:rgba(79,255,176,0.3);">
+        <div style="color:var(--accent)" class="seg-name">Champions</div>
+        <div class="seg-count">234 customers · 18%</div>
+        <div class="seg-stats">
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹12,400</span></div>
+          <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">4.8</span></div>
+          <div class="seg-stat"><span>Churn risk</span><span style="color:var(--accent)">Low</span></div>
+        </div>
+      </div>
+      <div class="seg-card" style="border-color:rgba(123,97,255,0.3);">
+        <div style="color:var(--accent2)" class="seg-name">Loyal customers</div>
+        <div class="seg-count">378 customers · 29%</div>
+        <div class="seg-stats">
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹6,200</span></div>
+          <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">2.3</span></div>
+          <div class="seg-stat"><span>Churn risk</span><span style="color:var(--accent)">Low</span></div>
+        </div>
+      </div>
+      <div class="seg-card" style="border-color:rgba(255,209,102,0.3);">
+        <div style="color:var(--accent4)" class="seg-name">Potential loyalists</div>
+        <div class="seg-count">156 customers · 12%</div>
+        <div class="seg-stats">
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹3,800</span></div>
+          <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">1.6</span></div>
+          <div class="seg-stat"><span>Churn risk</span><span style="color:var(--accent4)">Med</span></div>
+        </div>
+      </div>
+      <div class="seg-card" style="border-color:rgba(255,209,102,0.3);">
+        <div style="color:var(--accent4)" class="seg-name">At risk</div>
+        <div class="seg-count">273 customers · 21%</div>
+        <div class="seg-stats">
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹2,100</span></div>
+          <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">0.4</span></div>
+          <div class="seg-stat"><span>Churn risk</span><span style="color:var(--accent4)">High</span></div>
+        </div>
+      </div>
+      <div class="seg-card" style="border-color:rgba(255,107,107,0.3);">
+        <div style="color:var(--accent3)" class="seg-name">Lost</div>
+        <div class="seg-count">104 customers · 8%</div>
+        <div class="seg-stats">
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹900</span></div>
+          <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">0.1</span></div>
+          <div class="seg-stat"><span>Churn risk</span><span style="color:var(--accent3)">Very high</span></div>
+        </div>
+      </div>
+      <div class="seg-card">
+        <div class="seg-name">New customers</div>
+        <div class="seg-count">156 customers · 12%</div>
+        <div class="seg-stats">
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹480</span></div>
+          <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">0.8</span></div>
+          <div class="seg-stat"><span>Churn risk</span><span style="color:var(--muted)">Unknown</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div class="panel-title">Segment action recommendations · LLM-generated</div><div class="panel-tag tag-nlp">LLM</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+        <div style="padding:14px;background:rgba(79,255,176,0.04);border-radius:10px;border:1px solid rgba(79,255,176,0.15);">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:6px;">CHAMPIONS</div>
+          <div style="font-size:12px;line-height:1.6;color:var(--muted);">Offer early access to new products. Loyalty tier upgrade with exclusive 5% extra discount.</div>
+        </div>
+        <div style="padding:14px;background:rgba(255,209,102,0.04);border-radius:10px;border:1px solid rgba(255,209,102,0.15);">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent4);margin-bottom:6px;">AT RISK</div>
+          <div style="font-size:12px;line-height:1.6;color:var(--muted);">Send personalised win-back email with 20% coupon on last viewed category within 7 days.</div>
+        </div>
+        <div style="padding:14px;background:rgba(255,107,107,0.04);border-radius:10px;border:1px solid rgba(255,107,107,0.15);">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent3);margin-bottom:6px;">LOST</div>
+          <div style="font-size:12px;line-height:1.6;color:var(--muted);">Last-resort reactivation campaign. If no response in 30 days, remove from active marketing spend.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: ASSISTANT ═══ -->
+  <div class="page" id="page-assistant">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Ask <span>MarketIQ</span></div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">OpenAI API · FAISS · all-MiniLM-L6-v2</div>
+      </div>
+    </div>
+    <div class="panel" style="max-width:720px;">
+      <div class="chat-area" id="chat-area">
+        <div class="msg msg-ai">
+          <div class="msg-bubble">Hi! I'm MarketIQ, your e-commerce intelligence assistant. I'm trained on your product catalogue and can answer questions about discounts, customer behaviour, product performance, and market trends. What would you like to know?</div>
+          <div class="msg-meta">MarketIQ · OpenAI + FAISS RAG</div>
+        </div>
+        <div class="msg msg-user">
+          <div class="msg-bubble">Which product category should we discount the most this weekend?</div>
+          <div class="msg-meta">You · just now</div>
+        </div>
+        <div class="msg msg-ai">
+          <div class="msg-bubble">Based on your sales data and model predictions, <strong>Electronics</strong> shows the highest price elasticity this week — a 10% discount is projected to lift conversion by ~18%. Home & Kitchen is also performing well with sentiment score 0.74.<br><br>Avoid heavy discounting on <strong>Clothing</strong> — sentiment is mixed and current stock levels are already low, so margin protection matters more.</div>
+          <div style="margin-top:8px;">
+            <span class="source-pill">sales_data.csv</span>
+            <span class="source-pill">product_metadata.json</span>
+            <span class="source-pill">model_output_v2.json</span>
+          </div>
+          <div class="msg-meta">MarketIQ · grounded · 3 sources</div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" placeholder="Ask about products, discounts, segments, trends..." onkeydown="if(event.key==='Enter')sendChat()" />
+        <button class="send-btn" onclick="sendChat()">Send</button>
+      </div>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
+        <div class="chip" onclick="quickQ(this)" style="font-size:10px;padding:4px 10px;">What's our worst-rated product?</div>
+        <div class="chip" onclick="quickQ(this)" style="font-size:10px;padding:4px 10px;">Show churn risk factors</div>
+        <div class="chip" onclick="quickQ(this)" style="font-size:10px;padding:4px 10px;">Recommend bundles for Electronics</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: RAG EXPLORER ═══ -->
+  <div class="page" id="page-rag">
+    <div class="topbar">
+      <div>
+        <div class="page-title">RAG <span>explorer</span></div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">ChromaDB · 18,420 chunks · top-k retrieval</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Query trace</div><div class="panel-tag tag-nlp">Retrieval</div></div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="background:var(--bg);border-radius:8px;padding:12px;font-family:var(--font-mono);font-size:11px;">
+            <div style="color:var(--muted);margin-bottom:4px;">QUERY</div>
+            <div style="color:var(--text);">"Which USB products have quality complaints?"</div>
+          </div>
+          <div style="background:var(--bg);border-radius:8px;padding:12px;font-family:var(--font-mono);font-size:11px;">
+            <div style="color:var(--muted);margin-bottom:4px;">EMBEDDING → cosine search</div>
+            <div style="color:var(--accent);">Retrieved 5 chunks · sim > 0.78</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="font-size:11px;font-weight:700;margin-bottom:4px;">Retrieved chunks</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.15);border-radius:8px;">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">review_1824 · Electronics</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);">sim 0.94</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.1);border-radius:8px;">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">review_0993 · Electronics</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);">sim 0.91</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(123,97,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:8px;">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">product_desc_412 · Accessories</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent2);">sim 0.83</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(123,97,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:8px;">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">faq_returns_87 · Policy</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent2);">sim 0.79</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Vector index health</div><div class="panel-tag tag-data">ChromaDB</div></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Total chunks</div>
+              <div style="font-size:20px;font-weight:800;margin-top:4px;">18,420</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Avg retrieval</div>
+              <div style="font-size:20px;font-weight:800;margin-top:4px;color:var(--accent);">44ms</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Factuality rate</div>
+              <div style="font-size:20px;font-weight:800;margin-top:4px;color:var(--accent);">91%</div>
+            </div>
+            <div style="background:var(--surface2);border-radius:8px;padding:12px;">
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Embedding model</div>
+              <div style="font-size:14px;font-weight:700;margin-top:4px;font-family:var(--font-mono);">all-mpnet</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;margin-bottom:8px;">Corpus breakdown</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:11px;">
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Product descriptions</span><span>6,240 chunks</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Customer reviews</span><span>9,800 chunks</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">FAQs &amp; policies</span><span>1,440 chunks</span></div>
+              <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Category metadata</span><span>940 chunks</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: PIPELINE ═══ -->
+  <div class="page" id="page-pipeline">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Data <span>pipeline</span></div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">End-to-end · all systems operational</div>
+      </div>
+    </div>
+    <div class="panel" style="margin-bottom:16px;">
+      <div class="panel-head"><div class="panel-title">Ingestion → model → API</div><div class="panel-tag tag-ops">Live status</div></div>
+      <div class="pipeline-steps">
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Raw ingestion</div><div class="pipe-tech">Kaggle CSV · Pandas</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">EDA + clean</div><div class="pipe-tech">Null impute · outliers</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Feature eng.</div><div class="pipe-tech">Encoding · scaling</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Model train</div><div class="pipe-tech">XGBoost · Llama LoRA</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Vector index</div><div class="pipe-tech">Embed → ChromaDB</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">FastAPI serve</div><div class="pipe-tech">Docker · /predict</div></div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Package architecture</div><div class="panel-tag tag-ops">How it all fits</div></div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:2;">
+          <div style="color:var(--accent);">marketiq/</div>
+          <div>&nbsp;&nbsp;data/ &nbsp;<span style="color:var(--dim)">← raw + processed datasets</span></div>
+          <div>&nbsp;&nbsp;notebooks/ &nbsp;<span style="color:var(--dim)">← EDA, experiments</span></div>
+          <div>&nbsp;&nbsp;src/</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;pipeline/ &nbsp;<span style="color:var(--dim)">← ingestion, features</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;models/ &nbsp;<span style="color:var(--dim)">← train, predict, evaluate</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;rag/ &nbsp;<span style="color:var(--dim)">← embed, retrieve, generate</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;api/ &nbsp;<span style="color:var(--dim)">← FastAPI routes</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;monitoring/ &nbsp;<span style="color:var(--dim)">← drift, metrics</span></div>
+          <div>&nbsp;&nbsp;tests/ &nbsp;<span style="color:var(--dim)">← unit + integration</span></div>
+          <div>&nbsp;&nbsp;Dockerfile</div>
+          <div>&nbsp;&nbsp;docker-compose.yml</div>
+          <div>&nbsp;&nbsp;mlflow.yaml</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Docker services</div><div class="panel-tag tag-ops">Compose</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.15);border-radius:8px;">
+            <div><div style="font-size:12px;font-weight:700;">api</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">FastAPI · port 8000</div></div>
+            <span class="badge b-green">Running</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.15);border-radius:8px;">
+            <div><div style="font-size:12px;font-weight:700;">XGBoost</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Tracking · port 5000</div></div>
+            <span class="badge b-green">Running</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.15);border-radius:8px;">
+            <div><div style="font-size:12px;font-weight:700;">chromadb</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Vector store · port 8001</div></div>
+            <span class="badge b-green">Running</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(255,209,102,0.04);border:1px solid rgba(255,209,102,0.15);border-radius:8px;">
+            <div><div style="font-size:12px;font-weight:700;">prometheus</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Metrics · port 9090</div></div>
+            <span class="badge b-yellow">Starting</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PAGE: MONITORING ═══ -->
+  <div class="page" id="page-monitoring">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Model <span>monitoring</span></div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Evidently AI · drift detection · auto-retrain ready</div>
+      </div>
+      <div class="topbar-actions"><div class="chip" style="color:var(--accent4);border-color:rgba(255,209,102,0.4);">1 drift alert</div></div>
+    </div>
+
+    <div class="metric-row">
+      <div class="metric-card" style="--accent-bar:var(--accent)"><div class="metric-label">API latency (p95)</div><div class="metric-value">98<span style="font-size:14px;color:var(--muted)">ms</span></div><div class="metric-delta delta-up">↓ 12ms vs yesterday</div></div>
+      <div class="metric-card" style="--accent-bar:var(--accent2)"><div class="metric-label">Predictions / day</div><div class="metric-value">4.2<span style="font-size:14px;color:var(--muted)">k</span></div><div class="metric-delta delta-up">↑ 340 vs avg</div></div>
+      <div class="metric-card" style="--accent-bar:var(--accent4)"><div class="metric-label">Data drift score</div><div class="metric-value" style="color:var(--accent4)">0.18</div><div class="metric-delta" style="color:var(--accent4)">⚠ Threshold 0.15</div></div>
+      <div class="metric-card" style="--accent-bar:var(--accent)"><div class="metric-label">Model uptime</div><div class="metric-value">99.8<span style="font-size:14px;color:var(--muted)">%</span></div><div class="metric-delta delta-up">All endpoints live</div></div>
+    </div>
+
+    <div class="wide-narrow">
+      <div class="panel">
+        <div class="panel-head"><div class="panel-title">Feature drift monitor</div><div class="panel-tag tag-ops">Evidently AI</div></div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:8px;">
+            <div style="font-family:var(--font-mono);font-size:11px;">actual_price</div>
+            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:12%;background:var(--accent)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent)">0.12 · OK</span></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(255,209,102,0.04);border:1px solid rgba(255,209,102,0.2);border-radius:8px;">
+            <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent4);">rating_count</div>
+            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:18%;background:var(--accent4)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent4)">0.18 · DRIFT</span></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:8px;">
+            <div style="font-family:var(--font-mono);font-size:11px;">category_id</div>
+            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:5%;background:var(--accent)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent)">0.05 · OK</span></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:8px;">
+            <div style="font-family:var(--font-mono);font-size:11px;">sentiment_score</div>
+            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:9%;background:var(--accent)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent)">0.09 · OK</span></div>
+          </div>
+          <div style="padding:12px;background:rgba(255,209,102,0.05);border:1px solid rgba(255,209,102,0.2);border-radius:10px;font-size:12px;line-height:1.6;color:var(--muted);">
+            <span style="color:var(--accent4);font-weight:700;">Drift alert:</span> <code style="font-family:var(--font-mono)">rating_count</code> distribution shifted by 18%. Possible cause: new products with no reviews added this week. Recommend auto-retrain in 48h if drift persists.
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Retrain policy</div><div class="panel-tag tag-ops">Automated</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
+            <div style="display:flex;justify-content:space-between;"><span>Drift threshold</span><span style="color:var(--text)">0.15</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Trigger wait</span><span style="color:var(--text)">48h</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Retrain schedule</span><span style="color:var(--text)">Weekly</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Last retrain</span><span style="color:var(--text)">6 days ago</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>Next scheduled</span><span style="color:var(--accent4)">Tomorrow</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><div class="panel-title">Endpoints health</div><div class="panel-tag tag-ops">FastAPI</div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:11px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/predict_discount</span><span class="badge b-green">OK · 88ms</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/answer_question</span><span class="badge b-green">OK · 340ms</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/health</span><span class="badge b-green">OK · 4ms</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/metrics</span><span class="badge b-green">OK · 12ms</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+// Category bars
+const cats = ['Electronics','Home','Sports','Clothing','Books','Beauty'];
+const vals = [42, 31, 28, 35, 18, 24];
+const colors = ['#4fffb0','#7b61ff','#ffd166','#ff6b6b','#4fffb0','#7b61ff'];
+const barCont = document.getElementById('cat-bars');
+const labelCont = document.getElementById('cat-labels');
+const max = Math.max(...vals);
+cats.forEach((c, i) => {
+  const b = document.createElement('div');
+  b.className = 'bar';
+  b.style.cssText = `height:${(vals[i]/max)*100}%;background:${colors[i]};opacity:0.8;`;
+  barCont.appendChild(b);
+  const l = document.createElement('div');
+  l.innerHTML = `<div class="bar-label">${c.substring(0,5)}</div>`;
+  labelCont.appendChild(l);
+});
+
+// Sparkline
+const spData = [55,62,58,71,68,74,80,77,82,79,85,88,84,91,87,93,90,96,92,98,95,100,97,103];
+const spMax = Math.max(...spData);
+const spCont = document.getElementById('sparkline');
+spData.forEach((v, i) => {
+  const s = document.createElement('div');
+  s.className = 'spark';
+  const intensity = i / spData.length;
+  s.style.cssText = `height:${(v/spMax)*100}%;background:rgba(79,255,176,${0.3 + intensity * 0.7});`;
+  spCont.appendChild(s);
+});
+
+// Segment mini sparklines
+function miniSpark(id, data, color) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const mx = Math.max(...data);
+  data.forEach(v => {
+    const s = document.createElement('div');
+    s.className = 'spark';
+    s.style.cssText = `height:${(v/mx)*100}%;background:${color};flex:1;`;
+    el.appendChild(s);
+  });
+}
+miniSpark('sp-a', [70,75,80,78,85,88,90,92], 'rgba(79,255,176,0.7)');
+miniSpark('sp-b', [60,62,65,63,67,66,70,68], 'rgba(123,97,255,0.7)');
+miniSpark('sp-c', [80,75,70,65,60,55,52,48], 'rgba(255,209,102,0.7)');
+miniSpark('sp-d', [40,42,38,44,40,43,41,45], 'rgba(255,107,107,0.5)');
+
+// Sentiment bars
+const sentVals = [0.64,0.68,0.66,0.70,0.71,0.69,0.73,0.71,0.74,0.72,0.75,0.71];
+const sentWeeks = ['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12'];
+const sCont = document.getElementById('sent-bars');
+const sLab = document.getElementById('sent-labels');
+const sMax = Math.max(...sentVals);
+sentVals.forEach((v, i) => {
+  const b = document.createElement('div');
+  b.className = 'bar';
+  b.style.cssText = `height:${(v/sMax)*100}%;background:rgba(79,255,176,${0.4 + (v/sMax)*0.5});`;
+  sCont.appendChild(b);
+  const l = document.createElement('div');
+  l.innerHTML = `<div class="bar-label">${sentWeeks[i]}</div>`;
+  sLab.appendChild(l);
+});
+
+// Heatmap
+const products = ['USB-C Hub','Yoga Mat','Steel Bottle','BT Speaker','Laptop Stand'];
+const aspects = ['Quality','Value','Delivery','Support','Durability'];
+const hmData = [
+  [0.92, 0.85, 0.90, 0.78, 0.88],
+  [0.74, 0.82, 0.91, 0.65, 0.70],
+  [0.88, 0.79, 0.93, 0.72, 0.91],
+  [0.44, 0.55, 0.80, 0.38, 0.42],
+  [0.90, 0.88, 0.87, 0.82, 0.94],
+];
+const hmCont = document.getElementById('heatmap-container');
+const hdrRow = document.createElement('div');
+hdrRow.style.cssText = 'display:grid;grid-template-columns:110px repeat(5,1fr);gap:3px;margin-bottom:3px;';
+[''].concat(aspects).forEach(a => {
+  const c = document.createElement('div');
+  c.style.cssText = 'font-family:var(--font-mono);font-size:10px;color:var(--muted);padding:4px 6px;text-align:center;';
+  c.textContent = a;
+  hdrRow.appendChild(c);
+});
+hmCont.appendChild(hdrRow);
+products.forEach((p, i) => {
+  const row = document.createElement('div');
+  row.style.cssText = 'display:grid;grid-template-columns:110px repeat(5,1fr);gap:3px;margin-bottom:3px;';
+  const lbl = document.createElement('div');
+  lbl.style.cssText = 'font-family:var(--font-mono);font-size:10px;color:var(--muted);display:flex;align-items:center;padding-right:8px;';
+  lbl.textContent = p;
+  row.appendChild(lbl);
+  hmData[i].forEach(v => {
+    const cell = document.createElement('div');
+    cell.className = 'hm-cell';
+    const r = v < 0.6 ? Math.round(255 * (1 - v)) : 0;
+    const g = v > 0.5 ? Math.round(180 * v) : 80;
+    const alpha = 0.2 + v * 0.7;
+    cell.style.cssText = `background:rgba(${r},${g},80,${alpha});color:rgba(255,255,255,0.85);`;
+    cell.textContent = v.toFixed(2);
+    row.appendChild(cell);
+  });
+  hmCont.appendChild(row);
+});
+
+const API_BASE = window.location.origin;
+
+async function runPrediction() {
+  const result = document.getElementById('pred-result');
+  const predVal = document.getElementById('pred-val');
+  predVal.textContent = '...';
+  const actualPrice = Number(document.getElementById('f-price').value);
+  const payload = {
+    category: document.getElementById('cat-sel').value,
+    actual_price: actualPrice,
+    discounted_price: Math.max(1, actualPrice * 0.7),
+    rating: Number(document.getElementById('f-rating').value),
+    rating_count: Number(document.getElementById('f-reviews').value),
+    product_name: `${document.getElementById('brand-tier').value} product`
+  };
+  try {
+    const res = await fetch(`${API_BASE}/predict_discount`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Prediction failed');
+    predVal.textContent = `${Math.round(data.discount_pct)}%`;
+    result.title = `Confidence: ${data.confidence}`;
+  } catch (err) {
+    predVal.textContent = 'ERR';
+    result.title = err.message;
+  }
+}
+
+// Chat
+const responses = [
+  { q: "worst-rated product", a: "The <strong>Bluetooth Speaker</strong> has the lowest sentiment score at 0.44, driven by 340+ negative reviews mentioning battery life and connectivity. Predicted discount is already at 60%, which is above model recommendation of 47%.", sources: ["review_data.csv", "model_output_v2.json"] },
+  { q: "churn risk", a: "Key churn signals: <strong>rating_count drop</strong> (>30% decrease in 60 days), <strong>last purchase > 90 days ago</strong>, and <strong>support ticket filed</strong>. Your 'At Risk' segment (21%) shows all three. Recommended action: personalised win-back campaign within 7 days.", sources: ["customer_segments.pkl", "churn_model.pkl"] },
+  { q: "bundles", a: "For Electronics, high co-purchase affinity exists between: USB-C Hub + Laptop Stand (42% co-purchase rate), and Bluetooth Speaker + Phone Case (31%). Bundling at 5% combined discount is projected to lift AOV by ₹340.", sources: ["purchase_history.csv", "product_metadata.json"] },
+];
+
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const val = input.value.trim();
+  if (!val) return;
+  const area = document.getElementById('chat-area');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg msg-user';
+  userMsg.innerHTML = `<div class="msg-bubble">${val}</div><div class="msg-meta">You · just now</div>`;
+  area.appendChild(userMsg);
+  input.value = '';
+  area.scrollTop = area.scrollHeight;
+  setTimeout(() => {
+    const match = responses.find(r => val.toLowerCase().includes(r.q.split(' ')[0]));
+    const resp = match || { a: "I'm analysing your query against the product database and model outputs. Based on current data, I'd recommend checking the discount prediction and sentiment pages for the most relevant insights for your question.", sources: ["product_data.csv"] };
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'msg msg-ai';
+    aiMsg.innerHTML = `<div class="msg-bubble">${resp.a}<br><div style="margin-top:8px;">${resp.sources.map(s=>`<span class="source-pill">${s}</span>`).join('')}</div></div><div class="msg-meta">MarketIQ · grounded · ${resp.sources.length} source${resp.sources.length>1?'s':''}</div>`;
+    area.appendChild(aiMsg);
+    area.scrollTop = area.scrollHeight;
+  }, 800);
+}
+
+sendChat = async function() {
+  const input = document.getElementById('chat-input');
+  const val = input.value.trim();
+  if (!val) return;
+  const area = document.getElementById('chat-area');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg msg-user';
+  userMsg.innerHTML = `<div class="msg-bubble">${val}</div><div class="msg-meta">You Â· just now</div>`;
+  area.appendChild(userMsg);
+  input.value = '';
+  const aiMsg = document.createElement('div');
+  aiMsg.className = 'msg msg-ai';
+  aiMsg.innerHTML = `<div class="msg-bubble">Searching product context and generating a grounded answer...</div><div class="msg-meta">MarketIQ Â· working</div>`;
+  area.appendChild(aiMsg);
+  area.scrollTop = area.scrollHeight;
+  try {
+    const res = await fetch(`${API_BASE}/answer_question`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: val, top_k: 5 })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Assistant request failed');
+    const pills = (data.sources || []).slice(0, 4).map(s => `<span class="source-pill">${s.product_id || s.product_name || 'source'}</span>`).join('');
+    aiMsg.innerHTML = `<div class="msg-bubble">${data.answer}<br><div style="margin-top:8px;">${pills}</div></div><div class="msg-meta">MarketIQ Â· grounded Â· ${(data.sources || []).length} sources</div>`;
+  } catch (err) {
+    aiMsg.innerHTML = `<div class="msg-bubble">API unavailable: ${err.message}</div><div class="msg-meta">MarketIQ Â· fallback</div>`;
+  }
+  area.scrollTop = area.scrollHeight;
+}
+
+function quickQ(el) {
+  document.getElementById('chat-input').value = el.textContent;
+  sendChat();
+}
+</script>
+</body>
+</html>

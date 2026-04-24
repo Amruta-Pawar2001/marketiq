@@ -1,0 +1,30 @@
+# Secrets and local environment
+.env
+.venv/
+venv/
+env/
+
+# Python cache/test output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+pytest-cache-files-*/
+.coverage
+htmlcov/
+
+# Generated data/model artifacts
+data/processed/*
+!data/processed/.gitkeep
+data/embeddings/*
+!data/embeddings/.gitkeep
+models/*
+!models/.gitkeep
+
+# Local editor/OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Docker/runtime logs
+*.log
