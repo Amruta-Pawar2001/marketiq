@@ -76,6 +76,12 @@ Live:
 - `/answer_question`
 - `/rag_trace`
 - `/overview_metrics`
+- `/discount_distribution`
+- `/model_health`
+- `/review_insights`
+- `/segment_actions`
+- `/vector_index_health`
+- `/monitoring_dashboard`
 - `/top_products`
 - `/sentiment/{product_id}`
 - `/sentiment_heatmap`
@@ -86,13 +92,12 @@ Live:
 
 Planned/demo presentation areas:
 
-- Trend charts
+- Revenue trend charts
 - Revenue trend and top movers
 - SHAP bars in the prediction view
 - Weekly sentiment trend
 - Customer RFM-style cards and LLM-generated segment actions
-- Vector index health cards
-- Automated retraining policy and detailed monitoring dashboard
+- Automated retraining execution
 
 ## API Examples
 

@@ -107,3 +107,21 @@ def test_overview_metrics(monkeypatch):
     response = client.get("/overview_metrics")
     assert response.status_code == 200
     assert response.json()["avg_predicted_discount"] == 30.0
+
+
+def test_dashboard_endpoints(monkeypatch):
+    monkeypatch.setattr(insights_route, "discount_distribution", lambda: {"categories": []})
+    monkeypatch.setattr(insights_route, "model_health", lambda: {"rmse": 1, "mae": 1, "r2": 0.9})
+    monkeypatch.setattr(insights_route, "review_insights", lambda limit=3: {"insights": []})
+    monkeypatch.setattr(insights_route, "segment_actions", lambda: {"actions": []})
+    monkeypatch.setattr(insights_route, "vector_index_health", lambda: {"total_chunks": 0})
+    monkeypatch.setattr(insights_route, "monitoring_dashboard", lambda: {"drift": {}, "metrics": {}, "endpoint_rows": []})
+    for path in [
+        "/discount_distribution",
+        "/model_health",
+        "/review_insights",
+        "/segment_actions",
+        "/vector_index_health",
+        "/monitoring_dashboard",
+    ]:
+        assert client.get(path).status_code == 200

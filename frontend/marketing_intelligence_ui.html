@@ -303,7 +303,7 @@
       <div class="panel">
         <div class="panel-head">
           <div class="panel-title">Discount distribution by category</div>
-          <div class="panel-tag tag-data">Demo chart</div>
+          <div class="panel-tag tag-data">Live endpoint</div>
         </div>
         <div class="bar-chart" id="cat-bars"></div>
         <div class="bar-labels" id="cat-labels"></div>
@@ -436,7 +436,7 @@
 
       <div style="display:flex;flex-direction:column;gap:14px;">
         <div class="panel">
-          <div class="panel-head"><div class="panel-title">Model health</div><div class="panel-tag tag-data">Sample metrics</div></div>
+          <div class="panel-head"><div class="panel-title">Model health</div><div class="panel-tag tag-data">Live metrics</div></div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">RMSE</span><span>3.21</span></div><div class="gauge"><div class="gauge-fill" style="width:68%;background:var(--accent)"></div></div></div>
             <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">MAE</span><span>2.44</span></div><div class="gauge"><div class="gauge-fill" style="width:76%;background:var(--accent2)"></div></div></div>
@@ -475,9 +475,8 @@
 
     <div class="two-col">
       <div class="panel">
-        <div class="panel-head"><div class="panel-title">Recent review insights</div><div class="panel-tag tag-data">Demo copy</div></div>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div style="padding:12px;background:rgba(79,255,176,0.05);border:1px solid rgba(79,255,176,0.15);border-radius:10px;">
+        <div class="panel-head"><div class="panel-title">Recent review insights</div><div class="panel-tag tag-data">Live endpoint</div></div>
+        <div id="review-insights" style="display:flex;flex-direction:column;gap:12px;"><div style="padding:12px;background:rgba(79,255,176,0.05);border:1px solid rgba(79,255,176,0.15);border-radius:10px;">
             <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:4px;">POSITIVE · USB-C Hub</div>
             <div style="font-size:12px;line-height:1.6;color:var(--muted);">"Customers consistently praise the <strong style="color:var(--text)">build quality</strong> and <strong style="color:var(--text)">charging speed</strong>. 87% mention fast delivery."</div>
           </div>
@@ -572,8 +571,7 @@
     </div>
     <div class="panel">
       <div class="panel-head"><div class="panel-title">Segment action recommendations · LLM-generated</div><div class="panel-tag tag-data">Planned</div></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
-        <div style="padding:14px;background:rgba(79,255,176,0.04);border-radius:10px;border:1px solid rgba(79,255,176,0.15);">
+      <div id="segment-actions" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;"><div style="padding:14px;background:rgba(79,255,176,0.04);border-radius:10px;border:1px solid rgba(79,255,176,0.15);">
           <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:6px;">CHAMPIONS</div>
           <div style="font-size:12px;line-height:1.6;color:var(--muted);">Offer early access to new products. Loyalty tier upgrade with exclusive 5% extra discount.</div>
         </div>
@@ -680,25 +678,23 @@
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
             <div style="background:var(--surface2);border-radius:8px;padding:12px;">
               <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Total chunks</div>
-              <div style="font-size:20px;font-weight:800;margin-top:4px;">18,420</div>
+              <div id="vector-chunks" style="font-size:20px;font-weight:800;margin-top:4px;">--</div>
             </div>
             <div style="background:var(--surface2);border-radius:8px;padding:12px;">
               <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Avg retrieval</div>
-              <div style="font-size:20px;font-weight:800;margin-top:4px;color:var(--accent);">44ms</div>
+              <div id="vector-load" style="font-size:20px;font-weight:800;margin-top:4px;color:var(--accent);">--</div>
             </div>
             <div style="background:var(--surface2);border-radius:8px;padding:12px;">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Factuality rate</div>
-              <div style="font-size:20px;font-weight:800;margin-top:4px;color:var(--accent);">91%</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Products indexed</div><div id="vector-products" style="font-size:20px;font-weight:800;margin-top:4px;color:var(--accent);">--</div>
             </div>
             <div style="background:var(--surface2);border-radius:8px;padding:12px;">
               <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Embedding model</div>
-              <div style="font-size:14px;font-weight:700;margin-top:4px;font-family:var(--font-mono);">MiniLM-L6</div>
+              <div id="vector-model" style="font-size:14px;font-weight:700;margin-top:4px;font-family:var(--font-mono);">MiniLM-L6</div>
             </div>
           </div>
           <div>
             <div style="font-size:11px;font-weight:700;margin-bottom:8px;">Corpus breakdown</div>
-            <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:11px;">
-              <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Product descriptions</span><span>6,240 chunks</span></div>
+            <div id="vector-files" style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:11px;"><div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Product descriptions</span><span>--</span></div>
               <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Customer reviews</span><span>9,800 chunks</span></div>
               <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">FAQs &amp; policies</span><span>1,440 chunks</span></div>
               <div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">Category metadata</span><span>940 chunks</span></div>
@@ -748,7 +744,7 @@
         </div>
       </div>
       <div class="panel">
-        <div class="panel-head"><div class="panel-title">Docker services</div><div class="panel-tag tag-data">Planned compose</div></div>
+        <div class="panel-head"><div class="panel-title">Docker services</div><div class="panel-tag tag-data">Live config</div></div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.15);border-radius:8px;">
             <div><div style="font-size:12px;font-weight:700;">api</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">FastAPI · port 8000</div></div>
@@ -778,22 +774,20 @@
         <div class="page-title">Model <span>monitoring</span></div>
         <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Drift endpoint live; auto-retrain automation planned</div>
       </div>
-      <div class="topbar-actions"><div class="chip" style="color:var(--accent4);border-color:rgba(255,209,102,0.4);">Sample alert</div></div>
+      <div class="topbar-actions"><div id="monitoring-alert" class="chip" style="color:var(--accent4);border-color:rgba(255,209,102,0.4);">Loading</div></div>
     </div>
 
     <div class="metric-row">
-      <div class="metric-card" style="--accent-bar:var(--accent)"><div class="metric-label">API latency (p95)</div><div class="metric-value">98<span style="font-size:14px;color:var(--muted)">ms</span></div><div class="metric-delta delta-up">↓ 12ms vs yesterday</div></div>
-      <div class="metric-card" style="--accent-bar:var(--accent2)"><div class="metric-label">Predictions / day</div><div class="metric-value">4.2<span style="font-size:14px;color:var(--muted)">k</span></div><div class="metric-delta delta-up">↑ 340 vs avg</div></div>
-      <div class="metric-card" style="--accent-bar:var(--accent4)"><div class="metric-label">Data drift score</div><div class="metric-value" style="color:var(--accent4)">0.18</div><div class="metric-delta" style="color:var(--accent4)">⚠ Threshold 0.15</div></div>
-      <div class="metric-card" style="--accent-bar:var(--accent)"><div class="metric-label">Model uptime</div><div class="metric-value">99.8<span style="font-size:14px;color:var(--muted)">%</span></div><div class="metric-delta delta-up">All endpoints live</div></div>
+      <div class="metric-card" style="--accent-bar:var(--accent)"><div class="metric-label">Avg API latency</div><div id="mon-latency" class="metric-value">--</div><div class="metric-delta delta-up">From in-memory metrics</div></div>
+      <div class="metric-card" style="--accent-bar:var(--accent2)"><div class="metric-label">Requests observed</div><div id="mon-requests" class="metric-value">--</div><div class="metric-delta delta-up">Since API start</div></div>
+      <div class="metric-card" style="--accent-bar:var(--accent4)"><div class="metric-label">Data drift score</div><div id="mon-drift" class="metric-value" style="color:var(--accent4)">--</div><div id="mon-drift-meta" class="metric-delta" style="color:var(--accent4)">Loading</div></div>
+      <div class="metric-card" style="--accent-bar:var(--accent)"><div class="metric-label">Retrain recommendation</div><div id="mon-retrain" class="metric-value" style="font-size:28px;">--</div><div class="metric-delta delta-up">From drift report</div></div>
     </div>
 
     <div class="wide-narrow">
       <div class="panel">
-        <div class="panel-head"><div class="panel-title">Feature drift monitor</div><div class="panel-tag tag-data">Demo display</div></div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:8px;">
-            <div style="font-family:var(--font-mono);font-size:11px;">actual_price</div>
+        <div class="panel-head"><div class="panel-title">Feature drift monitor</div><div class="panel-tag tag-data">Live drift</div></div>
+        <div id="feature-drift-list" style="display:flex;flex-direction:column;gap:10px;"><div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:8px;"><div style="font-family:var(--font-mono);font-size:11px;">actual_price</div>
             <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:12%;background:var(--accent)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent)">0.12 · OK</span></div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(255,209,102,0.04);border:1px solid rgba(255,209,102,0.2);border-radius:8px;">
@@ -816,8 +810,7 @@
       <div style="display:flex;flex-direction:column;gap:14px;">
         <div class="panel">
           <div class="panel-head"><div class="panel-title">Retrain policy</div><div class="panel-tag tag-data">Planned</div></div>
-          <div style="display:flex;flex-direction:column;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
-            <div style="display:flex;justify-content:space-between;"><span>Drift threshold</span><span style="color:var(--text)">0.15</span></div>
+          <div id="retrain-policy" style="display:flex;flex-direction:column;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);"><div style="display:flex;justify-content:space-between;"><span>Drift threshold</span><span style="color:var(--text)">0.15</span></div>
             <div style="display:flex;justify-content:space-between;"><span>Trigger wait</span><span style="color:var(--text)">48h</span></div>
             <div style="display:flex;justify-content:space-between;"><span>Retrain schedule</span><span style="color:var(--text)">Weekly</span></div>
             <div style="display:flex;justify-content:space-between;"><span>Last retrain</span><span style="color:var(--text)">6 days ago</span></div>
@@ -825,9 +818,8 @@
           </div>
         </div>
         <div class="panel">
-          <div class="panel-head"><div class="panel-title">Endpoints health</div><div class="panel-tag tag-data">Sample status</div></div>
-          <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:11px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/predict_discount</span><span class="badge b-green">OK · 88ms</span></div>
+          <div class="panel-head"><div class="panel-title">Endpoints health</div><div class="panel-tag tag-data">Live metrics</div></div>
+          <div id="endpoint-health-list" style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:11px;"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/predict_discount</span><span class="badge b-green">OK · 88ms</span></div>
             <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/answer_question</span><span class="badge b-green">OK · 340ms</span></div>
             <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/health</span><span class="badge b-green">OK · 4ms</span></div>
             <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/metrics</span><span class="badge b-green">OK · 12ms</span></div>
@@ -910,6 +902,189 @@ sentVals.forEach((v, i) => {
 });
 
 const API_BASE = window.location.origin;
+
+function renderCategoryDistribution(categories) {
+  const bars = document.getElementById('cat-bars');
+  const labels = document.getElementById('cat-labels');
+  if (!bars || !labels || !categories?.length) return;
+  bars.innerHTML = '';
+  labels.innerHTML = '';
+  const palette = ['#4fffb0','#7b61ff','#ffd166','#ff6b6b','#46d19b','#6b54d9','#d4ad55','#d45760'];
+  const maxVal = Math.max(...categories.map(c => Number(c.avg_predicted_discount || 0)), 1);
+  categories.forEach((item, i) => {
+    const name = item.main_category || item.category || 'category';
+    const value = Number(item.avg_predicted_discount || 0);
+    const b = document.createElement('div');
+    b.className = 'bar';
+    b.title = `${name}: ${value.toFixed(1)}% predicted avg · ${item.products} products`;
+    b.style.cssText = `height:${(value / maxVal) * 100}%;background:${palette[i % palette.length]};opacity:0.85;`;
+    bars.appendChild(b);
+    const l = document.createElement('div');
+    l.innerHTML = `<div class="bar-label">${name.substring(0,5)}</div>`;
+    labels.appendChild(l);
+  });
+}
+
+async function loadDiscountDistribution() {
+  try {
+    const res = await fetch(`${API_BASE}/discount_distribution`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Distribution unavailable');
+    renderCategoryDistribution(data.categories || []);
+  } catch (err) {}
+}
+
+function updateModelHealth(data) {
+  const panel = [...document.querySelectorAll('.panel')].find(p => p.textContent.includes('Model health'));
+  if (!panel) return;
+  const rows = panel.querySelectorAll('.gauge');
+  const labels = panel.querySelectorAll('span');
+  const rmse = Number(data.rmse || 0);
+  const mae = Number(data.mae || 0);
+  const r2 = Number(data.r2 || 0);
+  if (labels.length >= 6) {
+    labels[1].textContent = rmse.toFixed(2);
+    labels[3].textContent = mae.toFixed(2);
+    labels[5].textContent = r2.toFixed(2);
+  }
+  if (rows[0]) rows[0].querySelector('.gauge-fill').style.width = `${Math.max(5, Math.min(100, 100 - rmse * 10))}%`;
+  if (rows[1]) rows[1].querySelector('.gauge-fill').style.width = `${Math.max(5, Math.min(100, 100 - mae * 10))}%`;
+  if (rows[2]) rows[2].querySelector('.gauge-fill').style.width = `${Math.max(5, Math.min(100, r2 * 100))}%`;
+}
+
+async function loadModelHealth() {
+  try {
+    const res = await fetch(`${API_BASE}/model_health`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Health unavailable');
+    updateModelHealth(data);
+  } catch (err) {}
+}
+
+function renderReviewInsights(insights) {
+  const target = document.getElementById('review-insights');
+  if (!target || !insights?.length) return;
+  target.innerHTML = insights.map(item => {
+    const positive = Number(item.sentiment_score || 0) >= 0.15;
+    const negative = Number(item.sentiment_score || 0) <= -0.15;
+    const color = positive ? 'var(--accent)' : negative ? 'var(--accent3)' : 'var(--accent4)';
+    const bg = positive ? 'rgba(79,255,176,0.05)' : negative ? 'rgba(255,107,107,0.05)' : 'rgba(255,209,102,0.05)';
+    const border = positive ? 'rgba(79,255,176,0.15)' : negative ? 'rgba(255,107,107,0.15)' : 'rgba(255,209,102,0.15)';
+    return `<div style="padding:12px;background:${bg};border:1px solid ${border};border-radius:10px;">
+      <div style="font-family:var(--font-mono);font-size:10px;color:${color};margin-bottom:4px;">${String(item.label || 'mixed').toUpperCase()} · ${String(item.product_name || item.product_id).substring(0,42)}</div>
+      <div style="font-size:12px;line-height:1.6;color:var(--muted);">Score ${Number(item.sentiment_score || 0).toFixed(2)} · ${item.snippet || 'Review text unavailable.'}</div>
+    </div>`;
+  }).join('');
+}
+
+async function loadReviewInsights() {
+  try {
+    const res = await fetch(`${API_BASE}/review_insights?limit=3`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Insights unavailable');
+    renderReviewInsights(data.insights || []);
+  } catch (err) {}
+}
+
+function renderSegmentActions(actions) {
+  const target = document.getElementById('segment-actions');
+  if (!target || !actions?.length) return;
+  target.innerHTML = actions.slice(0, 3).map((item, i) => {
+    const colors = ['var(--accent)', 'var(--accent4)', 'var(--accent2)'];
+    return `<div style="padding:14px;background:rgba(79,255,176,0.04);border-radius:10px;border:1px solid rgba(79,255,176,0.15);">
+      <div style="font-family:var(--font-mono);font-size:10px;color:${colors[i % colors.length]};margin-bottom:6px;">${String(item.label || 'SEGMENT').toUpperCase()} · ${item.products || 0} products</div>
+      <div style="font-size:12px;line-height:1.6;color:var(--muted);">${item.action}</div>
+    </div>`;
+  }).join('');
+}
+
+async function loadSegmentActions() {
+  try {
+    const res = await fetch(`${API_BASE}/segment_actions`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Segment actions unavailable');
+    renderSegmentActions(data.actions || []);
+  } catch (err) {}
+}
+
+function renderVectorHealth(data) {
+  const chunks = document.getElementById('vector-chunks');
+  const load = document.getElementById('vector-load');
+  const products = document.getElementById('vector-products');
+  const model = document.getElementById('vector-model');
+  const files = document.getElementById('vector-files');
+  if (chunks) chunks.textContent = data.total_chunks || 0;
+  if (load) load.textContent = `${Number(data.load_ms || 0).toFixed(0)}ms`;
+  if (products) products.textContent = data.products_indexed || 0;
+  if (model) model.textContent = String(data.embedding_model || 'MiniLM').replace('all-', '');
+  if (files) {
+    files.innerHTML = Object.entries(data.artifact_sizes_mb || {}).map(([name, size]) =>
+      `<div style="display:flex;justify-content:space-between;"><span style="color:var(--muted)">${name}</span><span>${size} MB</span></div>`
+    ).join('');
+  }
+}
+
+async function loadVectorHealth() {
+  try {
+    const res = await fetch(`${API_BASE}/vector_index_health`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Vector health unavailable');
+    renderVectorHealth(data);
+  } catch (err) {}
+}
+
+function renderMonitoring(data) {
+  const drift = data.drift || {};
+  const scores = drift.feature_scores || {};
+  const totalRequests = Object.values((data.metrics || {}).counters || {}).reduce((a, b) => a + Number(b || 0), 0);
+  const avgLatencies = Object.values((data.metrics || {}).latency || {}).map(v => Number(v.avg || 0) * 1000);
+  const avgLatency = avgLatencies.length ? avgLatencies.reduce((a,b)=>a+b,0) / avgLatencies.length : 0;
+  const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+  setText('monitoring-alert', drift.drift_detected ? 'Drift detected' : 'No drift');
+  setText('mon-latency', `${avgLatency.toFixed(0)}ms`);
+  setText('mon-requests', String(totalRequests));
+  setText('mon-drift', Number(drift.overall_drift_score || 0).toFixed(2));
+  setText('mon-drift-meta', `Threshold ${drift.threshold}`);
+  setText('mon-retrain', drift.recommendation || 'monitor');
+  const driftList = document.getElementById('feature-drift-list');
+  if (driftList) {
+    driftList.innerHTML = Object.entries(scores).map(([feature, score]) => {
+      const warn = Number(score) >= Number(drift.threshold || 0.15);
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:${warn ? 'rgba(255,209,102,0.04)' : 'var(--bg)'};border-radius:8px;">
+        <div style="font-family:var(--font-mono);font-size:11px;${warn ? 'color:var(--accent4);' : ''}">${feature}</div>
+        <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:${Math.min(100, Number(score) * 100)}%;background:${warn ? 'var(--accent4)' : 'var(--accent)'}"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:${warn ? 'var(--accent4)' : 'var(--accent)'}">${Number(score).toFixed(2)} · ${warn ? 'DRIFT' : 'OK'}</span></div>
+      </div>`;
+    }).join('');
+  }
+  const policy = document.getElementById('retrain-policy');
+  if (policy) {
+    policy.innerHTML = `<div style="display:flex;justify-content:space-between;"><span>Drift threshold</span><span style="color:var(--text)">${drift.threshold}</span></div>
+      <div style="display:flex;justify-content:space-between;"><span>Recommendation</span><span style="color:var(--text)">${drift.recommendation}</span></div>
+      <div style="display:flex;justify-content:space-between;"><span>Automation</span><span style="color:var(--accent4)">planned</span></div>`;
+  }
+  const endpoints = document.getElementById('endpoint-health-list');
+  if (endpoints) {
+    endpoints.innerHTML = (data.endpoint_rows || []).map(row =>
+      `<div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">${row.endpoint}</span><span class="badge b-green">OK · ${row.avg_latency_ms}ms · ${row.count}</span></div>`
+    ).join('') || '<div style="color:var(--muted)">No endpoint latency observed yet.</div>';
+  }
+}
+
+async function loadMonitoringDashboard() {
+  try {
+    const res = await fetch(`${API_BASE}/monitoring_dashboard`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Monitoring unavailable');
+    renderMonitoring(data);
+  } catch (err) {}
+}
+
+loadDiscountDistribution();
+loadModelHealth();
+loadReviewInsights();
+loadSegmentActions();
+loadVectorHealth();
+loadMonitoringDashboard();
 
 async function loadOverviewMetrics() {
   try {

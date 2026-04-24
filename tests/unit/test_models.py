@@ -71,3 +71,34 @@ def test_overview_metrics_shape(monkeypatch):
     metrics = overview_metrics(sentiment_sample=1)
     assert metrics["avg_predicted_discount"] == 25.0
     assert metrics["avg_sentiment_score"] == 0.5
+
+
+def test_dashboard_discount_distribution_shape(monkeypatch):
+    import pandas as pd
+
+    from src.models import dashboard as dashboard_module
+
+    df = pd.DataFrame(
+        {
+            "product_id": ["p1", "p2"],
+            "product_name": ["Cable", "Stand"],
+            "category": ["electronics", "office"],
+            "actual_price": [100.0, 200.0],
+            "discounted_price": [80.0, 150.0],
+            "discount_percentage": [20.0, 25.0],
+            "rating": [4.2, 4.0],
+            "rating_count": [10, 20],
+            "about_product": ["Good quality cable", "Good stand"],
+            "review_title": ["Good", "Fine"],
+            "review_content": ["Good value", "Works"],
+        }
+    )
+
+    class FakeModel:
+        def predict(self, X):
+            return [25.0, 35.0]
+
+    monkeypatch.setattr(dashboard_module, "ingest", lambda: df)
+    monkeypatch.setattr(dashboard_module, "load_model", lambda: FakeModel())
+    result = dashboard_module.discount_distribution()
+    assert result["categories"][0]["avg_predicted_discount"] >= 25
