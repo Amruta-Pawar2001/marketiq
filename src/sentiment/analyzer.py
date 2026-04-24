@@ -15,6 +15,16 @@ from src.config import SENTIMENT_MODEL_PATH, ensure_dirs
 from src.pipeline.clean import clean_data
 from src.pipeline.ingest import ingest
 
+ASPECT_KEYWORDS = {
+    "Quality": ["quality", "sturdy", "durable", "material", "build", "strong", "premium"],
+    "Value": ["value", "price", "worth", "cheap", "budget", "money", "cost"],
+    "Delivery": ["delivery", "delivered", "shipping", "package", "arrived", "fast"],
+    "Support": ["support", "service", "warranty", "replace", "replacement", "return"],
+    "Durability": ["durable", "durability", "long", "months", "break", "broken", "stopped", "life"],
+}
+POSITIVE_WORDS = {"good", "great", "excellent", "best", "value", "fast", "quality", "durable", "sturdy", "nice", "perfect"}
+NEGATIVE_WORDS = {"bad", "poor", "slow", "issue", "problem", "not", "broken", "stopped", "worst", "damaged", "complaint"}
+
 
 def review_text(df: pd.DataFrame) -> pd.Series:
     return (
@@ -95,6 +105,48 @@ def analyze_product(product_id: str) -> dict:
     return result
 
 
+def _aspect_score(text: str, rating: float, keywords: list[str]) -> float:
+    lower = text.lower()
+    sentences = [part.strip() for part in lower.replace("|", ".").split(".") if part.strip()]
+    relevant = [sentence for sentence in sentences if any(keyword in sentence for keyword in keywords)]
+    if not relevant:
+        return round(min(1.0, max(0.0, float(rating) / 5)), 2)
+
+    hits = " ".join(relevant).split()
+    positive = sum(word.strip(".,!?;:") in POSITIVE_WORDS for word in hits)
+    negative = sum(word.strip(".,!?;:") in NEGATIVE_WORDS for word in hits)
+    lexical = (positive + 1) / (positive + negative + 2)
+    rating_prior = min(1.0, max(0.0, float(rating) / 5))
+    return round((0.65 * lexical) + (0.35 * rating_prior), 2)
+
+
+def sentiment_heatmap(top_n: int = 5) -> dict:
+    df = clean_data(ingest())
+    df["text"] = review_text(df)
+    top = (
+        df.sort_values(["rating_count", "rating"], ascending=False)
+        .head(top_n)
+        .reset_index(drop=True)
+    )
+    rows = []
+    for _, row in top.iterrows():
+        text = row["text"]
+        scores = {
+            aspect: _aspect_score(text, float(row["rating"]), keywords)
+            for aspect, keywords in ASPECT_KEYWORDS.items()
+        }
+        rows.append(
+            {
+                "product_id": row["product_id"],
+                "product_name": row["product_name"],
+                "short_name": str(row["product_name"])[:28],
+                "rating": float(row["rating"]),
+                "rating_count": int(row["rating_count"]),
+                "scores": scores,
+            }
+        )
+    return {"aspects": list(ASPECT_KEYWORDS.keys()), "rows": rows}
+
+
 if __name__ == "__main__":
     print(train_sentiment_model())
-

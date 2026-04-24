@@ -1,13 +1,18 @@
 import pandas as pd
 
 from src.segments.clustering import summarize_segments
-from src.sentiment.analyzer import sentiment_label
+from src.sentiment.analyzer import _aspect_score, sentiment_label
 
 
 def test_sentiment_labels_from_rating():
     assert sentiment_label(4.5) == "positive"
     assert sentiment_label(3.0) == "negative"
     assert sentiment_label(3.8) == "neutral"
+
+
+def test_aspect_score_uses_relevant_review_text():
+    score = _aspect_score("Great build quality and sturdy material", 4.5, ["quality", "build"])
+    assert 0.5 <= score <= 1.0
 
 
 def test_segment_summary_labels_segments():

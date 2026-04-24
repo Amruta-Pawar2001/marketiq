@@ -467,7 +467,7 @@
     </div>
 
     <div class="panel" style="margin-bottom:16px;">
-      <div class="panel-head"><div class="panel-title">Sentiment heatmap — product × attribute</div><div class="panel-tag tag-data">Planned view</div></div>
+      <div class="panel-head"><div class="panel-title">Sentiment heatmap — product × attribute</div><div class="panel-tag tag-nlp">Live endpoint</div></div>
       <div style="overflow-x:auto;">
         <div id="heatmap-container"></div>
       </div>
@@ -905,9 +905,19 @@ sentVals.forEach((v, i) => {
   sLab.appendChild(l);
 });
 
+const API_BASE = window.location.origin;
+
 // Heatmap
-const products = ['USB-C Hub','Yoga Mat','Steel Bottle','BT Speaker','Laptop Stand'];
-const aspects = ['Quality','Value','Delivery','Support','Durability'];
+const demoHeatmap = {
+  aspects: ['Quality','Value','Delivery','Support','Durability'],
+  rows: [
+    { short_name: 'USB-C Hub', scores: { Quality: 0.92, Value: 0.85, Delivery: 0.90, Support: 0.78, Durability: 0.88 } },
+    { short_name: 'Yoga Mat', scores: { Quality: 0.74, Value: 0.82, Delivery: 0.91, Support: 0.65, Durability: 0.70 } },
+    { short_name: 'Steel Bottle', scores: { Quality: 0.88, Value: 0.79, Delivery: 0.93, Support: 0.72, Durability: 0.91 } },
+    { short_name: 'BT Speaker', scores: { Quality: 0.44, Value: 0.55, Delivery: 0.80, Support: 0.38, Durability: 0.42 } },
+    { short_name: 'Laptop Stand', scores: { Quality: 0.90, Value: 0.88, Delivery: 0.87, Support: 0.82, Durability: 0.94 } },
+  ]
+};
 const hmData = [
   [0.92, 0.85, 0.90, 0.78, 0.88],
   [0.74, 0.82, 0.91, 0.65, 0.70],
@@ -916,6 +926,53 @@ const hmData = [
   [0.90, 0.88, 0.87, 0.82, 0.94],
 ];
 const hmCont = document.getElementById('heatmap-container');
+function renderHeatmap(data) {
+  hmCont.innerHTML = '';
+  const aspects = data.aspects || demoHeatmap.aspects;
+  const rows = data.rows || demoHeatmap.rows;
+  const hdrRow = document.createElement('div');
+  hdrRow.style.cssText = `display:grid;grid-template-columns:minmax(110px,1.1fr) repeat(${aspects.length},1fr);gap:3px;margin-bottom:3px;`;
+  [''].concat(aspects).forEach(a => {
+    const c = document.createElement('div');
+    c.style.cssText = 'font-family:var(--font-mono);font-size:10px;color:var(--muted);padding:4px 6px;text-align:center;';
+    c.textContent = a;
+    hdrRow.appendChild(c);
+  });
+  hmCont.appendChild(hdrRow);
+  rows.forEach(item => {
+    const row = document.createElement('div');
+    row.style.cssText = `display:grid;grid-template-columns:minmax(110px,1.1fr) repeat(${aspects.length},1fr);gap:3px;margin-bottom:3px;`;
+    const lbl = document.createElement('div');
+    lbl.style.cssText = 'font-family:var(--font-mono);font-size:10px;color:var(--muted);display:flex;align-items:center;padding-right:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+    lbl.textContent = item.short_name || item.product_name || item.product_id || 'Product';
+    lbl.title = item.product_name || '';
+    row.appendChild(lbl);
+    aspects.forEach(aspect => {
+      const v = Number((item.scores || {})[aspect] ?? 0);
+      const cell = document.createElement('div');
+      cell.className = 'hm-cell';
+      const r = v < 0.6 ? Math.round(255 * (1 - v)) : 0;
+      const g = v > 0.5 ? Math.round(180 * v) : 80;
+      const alpha = 0.2 + v * 0.7;
+      cell.style.cssText = `background:rgba(${r},${g},80,${alpha});color:rgba(255,255,255,0.85);`;
+      cell.textContent = v.toFixed(2);
+      row.appendChild(cell);
+    });
+    hmCont.appendChild(row);
+  });
+}
+async function loadHeatmap() {
+  try {
+    const res = await fetch(`${API_BASE}/sentiment_heatmap?top_n=5`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Heatmap unavailable');
+    renderHeatmap(data);
+  } catch (err) {
+    renderHeatmap(demoHeatmap);
+  }
+}
+loadHeatmap();
+/*
 const hdrRow = document.createElement('div');
 hdrRow.style.cssText = 'display:grid;grid-template-columns:110px repeat(5,1fr);gap:3px;margin-bottom:3px;';
 [''].concat(aspects).forEach(a => {
@@ -944,8 +1001,7 @@ products.forEach((p, i) => {
   });
   hmCont.appendChild(row);
 });
-
-const API_BASE = window.location.origin;
+*/
 
 async function runPrediction() {
   const result = document.getElementById('pred-result');
