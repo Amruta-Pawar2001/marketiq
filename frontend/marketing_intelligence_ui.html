@@ -330,11 +330,11 @@
       <div class="panel">
         <div class="panel-head">
           <div class="panel-title">Top products · predicted vs actual discount</div>
-          <div class="panel-tag tag-data">Demo table</div>
+          <div class="panel-tag tag-ml">Live endpoint</div>
         </div>
         <table class="prod-table">
           <thead><tr><th>Product</th><th>Actual %</th><th>Predicted %</th><th>Sentiment</th><th>Flag</th></tr></thead>
-          <tbody>
+          <tbody id="top-products-body">
             <tr><td style="color:var(--text);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">USB-C Hub 7-in-1</td><td>45%</td><td>43%</td><td><div class="score-bar"><div class="score-fill" style="width:82%"></div></div></td><td><span class="badge b-green">Good</span></td></tr>
             <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Yoga Mat Premium</td><td>30%</td><td>38%</td><td><div class="score-bar"><div class="score-fill" style="width:61%"></div></div></td><td><span class="badge b-yellow">Drift</span></td></tr>
             <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Stainless Steel Bottle</td><td>22%</td><td>21%</td><td><div class="score-bar"><div class="score-fill" style="width:75%"></div></div></td><td><span class="badge b-green">Good</span></td></tr>
@@ -910,6 +910,37 @@ sentVals.forEach((v, i) => {
 });
 
 const API_BASE = window.location.origin;
+
+function renderTopProducts(rows) {
+  const body = document.getElementById('top-products-body');
+  if (!body) return;
+  body.innerHTML = rows.map(row => {
+    const colorClass = row.flag_color === 'red' ? 'b-red' : row.flag_color === 'yellow' ? 'b-yellow' : 'b-green';
+    const scoreWidth = Math.round(Math.max(0, Math.min(1, (Number(row.sentiment_score || 0) + 1) / 2)) * 100);
+    const product = row.product_name || row.product_id || 'Product';
+    return `
+      <tr>
+        <td style="color:var(--text);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${product}">${product}</td>
+        <td>${Math.round(Number(row.actual_discount || 0))}%</td>
+        <td>${Math.round(Number(row.predicted_discount || 0))}%</td>
+        <td><div class="score-bar"><div class="score-fill" style="width:${scoreWidth}%"></div></div></td>
+        <td><span class="badge ${colorClass}">${row.flag || 'Watch'}</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function loadTopProducts() {
+  try {
+    const res = await fetch(`${API_BASE}/top_products?limit=5`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Top products unavailable');
+    renderTopProducts(data.rows || []);
+  } catch (err) {
+    // Keep the static table rows as a fallback for offline/demo viewing.
+  }
+}
+loadTopProducts();
 
 // Heatmap
 const demoHeatmap = {

@@ -1,4 +1,5 @@
 from src.models.predict import prepare_input
+from src.models.top_products import _flag
 from src.pipeline.features import FEATURE_COLUMNS
 
 
@@ -30,3 +31,9 @@ def test_demand_score_increases_with_popularity():
     )
     scores = demand_score(df)
     assert scores.iloc[1] > scores.iloc[0]
+
+
+def test_top_product_flag_rules():
+    assert _flag(2, 0.4) == ("Good", "green")
+    assert _flag(20, 0.4) == ("Review", "red")
+    assert _flag(8, 0.1) == ("Watch", "yellow")
