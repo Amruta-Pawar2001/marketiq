@@ -278,22 +278,22 @@
 
     <div class="metric-row">
       <div class="metric-card" style="--accent-bar:var(--accent)">
-        <div class="metric-label">Avg predicted discount</div>
+        <div class="metric-label">Avg predicted discount · demo</div>
         <div class="metric-value">34<span style="font-size:16px;color:var(--muted)">%</span></div>
         <div class="metric-delta delta-up">↑ 2.4% vs last month</div>
       </div>
       <div class="metric-card" style="--accent-bar:var(--accent2)">
-        <div class="metric-label">Avg sentiment score</div>
+        <div class="metric-label">Avg sentiment score · demo</div>
         <div class="metric-value">0.71</div>
         <div class="metric-delta delta-up">↑ 0.03 improvement</div>
       </div>
       <div class="metric-card" style="--accent-bar:var(--accent4)">
-        <div class="metric-label">Model accuracy (R²)</div>
+        <div class="metric-label">Model accuracy (R²) · demo</div>
         <div class="metric-value">0.87</div>
         <div class="metric-delta delta-up">↑ 0.05 since last retrain</div>
       </div>
       <div class="metric-card" style="--accent-bar:var(--accent3)">
-        <div class="metric-label">RAG factuality rate</div>
+        <div class="metric-label">RAG factuality rate · planned</div>
         <div class="metric-value">91<span style="font-size:16px;color:var(--muted)">%</span></div>
         <div class="metric-delta delta-down">↓ 1.2% drift detected</div>
       </div>
@@ -303,7 +303,7 @@
       <div class="panel">
         <div class="panel-head">
           <div class="panel-title">Discount distribution by category</div>
-          <div class="panel-tag tag-ml">ML model</div>
+          <div class="panel-tag tag-data">Demo chart</div>
         </div>
         <div class="bar-chart" id="cat-bars"></div>
         <div class="bar-labels" id="cat-labels"></div>
@@ -311,7 +311,7 @@
       <div class="panel">
         <div class="panel-head">
           <div class="panel-title">Revenue trend</div>
-          <div class="panel-tag tag-data">Historical</div>
+          <div class="panel-tag tag-data">Future scope</div>
         </div>
         <div class="sparkline" id="sparkline"></div>
         <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:8px;">Last 24 weeks · all categories</div>
@@ -330,7 +330,7 @@
       <div class="panel">
         <div class="panel-head">
           <div class="panel-title">Top products · predicted vs actual discount</div>
-          <div class="panel-tag tag-ml">XGBoost</div>
+          <div class="panel-tag tag-data">Demo table</div>
         </div>
         <table class="prod-table">
           <thead><tr><th>Product</th><th>Actual %</th><th>Predicted %</th><th>Sentiment</th><th>Flag</th></tr></thead>
@@ -346,7 +346,7 @@
       <div class="panel">
         <div class="panel-head">
           <div class="panel-title">Customer segment overview</div>
-          <div class="panel-tag tag-ml">K-Means</div>
+          <div class="panel-tag tag-data">Demo labels</div>
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="display:flex;align-items:center;gap:12px;">
@@ -424,7 +424,7 @@
             <div class="pred-label">Recommended discount</div>
           </div>
           <div style="flex:1">
-            <div style="font-size:11px;font-weight:700;margin-bottom:10px;">SHAP feature importance</div>
+            <div style="font-size:11px;font-weight:700;margin-bottom:10px;">Planned SHAP feature importance</div>
             <div class="shap-row"><span class="shap-label">Price</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:85%;background:var(--accent)"></div></div><span class="shap-val">+0.42</span></div>
             <div class="shap-row"><span class="shap-label">Rating</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:62%;background:var(--accent2)"></div></div><span class="shap-val">+0.31</span></div>
             <div class="shap-row"><span class="shap-label">Reviews</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:48%;background:var(--accent4)"></div></div><span class="shap-val">+0.24</span></div>
@@ -436,7 +436,7 @@
 
       <div style="display:flex;flex-direction:column;gap:14px;">
         <div class="panel">
-          <div class="panel-head"><div class="panel-title">Model health</div><div class="panel-tag tag-ops">XGBoost</div></div>
+          <div class="panel-head"><div class="panel-title">Model health</div><div class="panel-tag tag-data">Sample metrics</div></div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">RMSE</span><span>3.21</span></div><div class="gauge"><div class="gauge-fill" style="width:68%;background:var(--accent)"></div></div></div>
             <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">MAE</span><span>2.44</span></div><div class="gauge"><div class="gauge-fill" style="width:76%;background:var(--accent2)"></div></div></div>
@@ -463,11 +463,11 @@
         <div class="page-title">Sentiment <span>analysis</span></div>
         <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Aspect-based · 12,840 reviews processed</div>
       </div>
-      <div class="topbar-actions"><div class="chip">Fine-tuned BERT</div></div>
+      <div class="topbar-actions"><div class="chip">TF-IDF live endpoint</div></div>
     </div>
 
     <div class="panel" style="margin-bottom:16px;">
-      <div class="panel-head"><div class="panel-title">Sentiment heatmap — product × attribute</div><div class="panel-tag tag-nlp">NLP</div></div>
+      <div class="panel-head"><div class="panel-title">Sentiment heatmap — product × attribute</div><div class="panel-tag tag-data">Planned view</div></div>
       <div style="overflow-x:auto;">
         <div id="heatmap-container"></div>
       </div>
@@ -475,7 +475,7 @@
 
     <div class="two-col">
       <div class="panel">
-        <div class="panel-head"><div class="panel-title">Recent review insights</div><div class="panel-tag tag-nlp">RAG summary</div></div>
+        <div class="panel-head"><div class="panel-title">Recent review insights</div><div class="panel-tag tag-data">Demo copy</div></div>
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div style="padding:12px;background:rgba(79,255,176,0.05);border:1px solid rgba(79,255,176,0.15);border-radius:10px;">
             <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:4px;">POSITIVE · USB-C Hub</div>
@@ -492,7 +492,7 @@
         </div>
       </div>
       <div class="panel">
-        <div class="panel-head"><div class="panel-title">Sentiment over time</div><div class="panel-tag tag-nlp">Trend</div></div>
+        <div class="panel-head"><div class="panel-title">Sentiment over time</div><div class="panel-tag tag-data">Future scope</div></div>
         <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:12px;">Weekly average · all products</div>
         <div class="bar-chart" id="sent-bars" style="height:120px;"></div>
         <div class="bar-labels" id="sent-labels"></div>
@@ -510,9 +510,9 @@
     <div class="topbar">
       <div>
         <div class="page-title">Customer <span>segments</span></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">RFM + K-Means clustering · 6 segments identified</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Product K-Means endpoint live; customer RFM cards are planned</div>
       </div>
-      <div class="topbar-actions"><div class="chip">K-Means · k=6</div></div>
+      <div class="topbar-actions"><div class="chip">K-Means endpoint live</div></div>
     </div>
     <div class="seg-grid" style="margin-bottom:16px;">
       <div class="seg-card" style="border-color:rgba(79,255,176,0.3);">
@@ -571,7 +571,7 @@
       </div>
     </div>
     <div class="panel">
-      <div class="panel-head"><div class="panel-title">Segment action recommendations · LLM-generated</div><div class="panel-tag tag-nlp">LLM</div></div>
+      <div class="panel-head"><div class="panel-title">Segment action recommendations · LLM-generated</div><div class="panel-tag tag-data">Planned</div></div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
         <div style="padding:14px;background:rgba(79,255,176,0.04);border-radius:10px;border:1px solid rgba(79,255,176,0.15);">
           <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:6px;">CHAMPIONS</div>
@@ -634,12 +634,12 @@
     <div class="topbar">
       <div>
         <div class="page-title">RAG <span>explorer</span></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">ChromaDB · 18,420 chunks · top-k retrieval</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">FAISS endpoint live; trace panels are demo</div>
       </div>
     </div>
     <div class="two-col">
       <div class="panel">
-        <div class="panel-head"><div class="panel-title">Query trace</div><div class="panel-tag tag-nlp">Retrieval</div></div>
+        <div class="panel-head"><div class="panel-title">Query trace</div><div class="panel-tag tag-data">Demo trace</div></div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="background:var(--bg);border-radius:8px;padding:12px;font-family:var(--font-mono);font-size:11px;">
             <div style="color:var(--muted);margin-bottom:4px;">QUERY</div>
@@ -671,7 +671,7 @@
         </div>
       </div>
       <div class="panel">
-        <div class="panel-head"><div class="panel-title">Vector index health</div><div class="panel-tag tag-data">ChromaDB</div></div>
+        <div class="panel-head"><div class="panel-title">Vector index health</div><div class="panel-tag tag-data">Planned metrics</div></div>
         <div style="display:flex;flex-direction:column;gap:12px;">
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
             <div style="background:var(--surface2);border-radius:8px;padding:12px;">
@@ -714,13 +714,13 @@
       </div>
     </div>
     <div class="panel" style="margin-bottom:16px;">
-      <div class="panel-head"><div class="panel-title">Ingestion → model → API</div><div class="panel-tag tag-ops">Live status</div></div>
+      <div class="panel-head"><div class="panel-title">Ingestion → model → API</div><div class="panel-tag tag-ops">Implementation map</div></div>
       <div class="pipeline-steps">
         <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Raw ingestion</div><div class="pipe-tech">Kaggle CSV · Pandas</div></div>
         <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">EDA + clean</div><div class="pipe-tech">Null impute · outliers</div></div>
         <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Feature eng.</div><div class="pipe-tech">Encoding · scaling</div></div>
-        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Model train</div><div class="pipe-tech">XGBoost · Llama LoRA</div></div>
-        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Vector index</div><div class="pipe-tech">Embed → ChromaDB</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Model train</div><div class="pipe-tech">XGBoost · sentiment · segments</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Vector index</div><div class="pipe-tech">MiniLM → FAISS</div></div>
         <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">FastAPI serve</div><div class="pipe-tech">Docker · /predict</div></div>
       </div>
     </div>
@@ -744,7 +744,7 @@
         </div>
       </div>
       <div class="panel">
-        <div class="panel-head"><div class="panel-title">Docker services</div><div class="panel-tag tag-ops">Compose</div></div>
+        <div class="panel-head"><div class="panel-title">Docker services</div><div class="panel-tag tag-data">Planned compose</div></div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.15);border-radius:8px;">
             <div><div style="font-size:12px;font-weight:700;">api</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">FastAPI · port 8000</div></div>
@@ -772,9 +772,9 @@
     <div class="topbar">
       <div>
         <div class="page-title">Model <span>monitoring</span></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Evidently AI · drift detection · auto-retrain ready</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Drift endpoint live; auto-retrain automation planned</div>
       </div>
-      <div class="topbar-actions"><div class="chip" style="color:var(--accent4);border-color:rgba(255,209,102,0.4);">1 drift alert</div></div>
+      <div class="topbar-actions"><div class="chip" style="color:var(--accent4);border-color:rgba(255,209,102,0.4);">Sample alert</div></div>
     </div>
 
     <div class="metric-row">
@@ -786,7 +786,7 @@
 
     <div class="wide-narrow">
       <div class="panel">
-        <div class="panel-head"><div class="panel-title">Feature drift monitor</div><div class="panel-tag tag-ops">Evidently AI</div></div>
+        <div class="panel-head"><div class="panel-title">Feature drift monitor</div><div class="panel-tag tag-data">Demo display</div></div>
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:8px;">
             <div style="font-family:var(--font-mono);font-size:11px;">actual_price</div>
@@ -811,7 +811,7 @@
       </div>
       <div style="display:flex;flex-direction:column;gap:14px;">
         <div class="panel">
-          <div class="panel-head"><div class="panel-title">Retrain policy</div><div class="panel-tag tag-ops">Automated</div></div>
+          <div class="panel-head"><div class="panel-title">Retrain policy</div><div class="panel-tag tag-data">Planned</div></div>
           <div style="display:flex;flex-direction:column;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
             <div style="display:flex;justify-content:space-between;"><span>Drift threshold</span><span style="color:var(--text)">0.15</span></div>
             <div style="display:flex;justify-content:space-between;"><span>Trigger wait</span><span style="color:var(--text)">48h</span></div>
@@ -821,7 +821,7 @@
           </div>
         </div>
         <div class="panel">
-          <div class="panel-head"><div class="panel-title">Endpoints health</div><div class="panel-tag tag-ops">FastAPI</div></div>
+          <div class="panel-head"><div class="panel-title">Endpoints health</div><div class="panel-tag tag-data">Sample status</div></div>
           <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:11px;">
             <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/predict_discount</span><span class="badge b-green">OK · 88ms</span></div>
             <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/answer_question</span><span class="badge b-green">OK · 340ms</span></div>

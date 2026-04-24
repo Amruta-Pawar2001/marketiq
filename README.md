@@ -63,6 +63,34 @@ Open:
 - `python -m src.monitoring.drift` writes a drift report for `/drift`.
 - `python -m src.models.train_all` runs all model and monitoring artifact generation.
 
+## Live vs Planned UI
+
+The FastAPI backend is live for prediction, retrieval, sentiment, segmentation, drift, health, and metrics endpoints.
+
+The dashboard also includes polished presentation panels from the original UI reference. These are marked in the UI as `demo`, `sample`, `planned`, or `future scope` when they are not currently calculated live.
+
+Live:
+
+- `/predict_discount` and the prediction form result after clicking **Run prediction**
+- `/predict_demand`
+- `/answer_question`
+- `/sentiment/{product_id}`
+- `/segments`
+- `/drift`
+- `/health`
+- `/metrics`
+
+Planned/demo presentation areas:
+
+- Overview aggregate cards and trend charts
+- Revenue trend and top movers
+- Static top-product comparison table
+- SHAP bars in the prediction view
+- Sentiment heatmap and weekly sentiment trend
+- Customer RFM-style cards and LLM-generated segment actions
+- RAG trace visualization and vector index health cards
+- Automated retraining policy and detailed monitoring dashboard
+
 ## API Examples
 
 ```bash
