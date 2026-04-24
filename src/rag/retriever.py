@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 
 from src.rag.vector_store import load_vector_store, search
+from src.config import EMBEDDING_MODEL, OPENAI_MODEL
 
 
 def parse_filters(question: str) -> dict:
@@ -37,3 +38,32 @@ def retrieve(question: str, top_k: int = 5) -> tuple[list[dict], dict]:
     filters = parse_filters(question)
     return search(question, top_k=top_k, filters=filters), filters
 
+
+def trace_question(question: str, top_k: int = 5) -> dict:
+    contexts, filters = retrieve(question, top_k=top_k)
+    retrieved = []
+    for rank, ctx in enumerate(contexts, start=1):
+        meta = ctx.get("metadata", {})
+        retrieved.append(
+            {
+                "rank": rank,
+                "score": round(float(ctx.get("score", 0.0)), 4),
+                "product_id": meta.get("product_id", ""),
+                "product_name": meta.get("product_name", ""),
+                "category": meta.get("main_category", ""),
+                "rating": meta.get("rating", None),
+                "discount_percentage": meta.get("discount_percentage", None),
+                "snippet": str(ctx.get("text", ""))[:320],
+            }
+        )
+    return {
+        "query": question,
+        "filters_used": filters,
+        "embedding_model": EMBEDDING_MODEL,
+        "vector_store": "FAISS IndexFlatIP over normalized MiniLM embeddings",
+        "generation_model": OPENAI_MODEL,
+        "top_k": top_k,
+        "retrieved_count": len(retrieved),
+        "min_similarity": min([item["score"] for item in retrieved], default=0.0),
+        "retrieved": retrieved,
+    }

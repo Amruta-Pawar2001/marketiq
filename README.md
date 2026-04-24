@@ -74,6 +74,7 @@ Live:
 - `/predict_discount` and the prediction form result after clicking **Run prediction**
 - `/predict_demand`
 - `/answer_question`
+- `/rag_trace`
 - `/sentiment/{product_id}`
 - `/sentiment_heatmap`
 - `/segments`
@@ -89,7 +90,7 @@ Planned/demo presentation areas:
 - SHAP bars in the prediction view
 - Weekly sentiment trend
 - Customer RFM-style cards and LLM-generated segment actions
-- RAG trace visualization and vector index health cards
+- Vector index health cards
 - Automated retraining policy and detailed monitoring dashboard
 
 ## API Examples
