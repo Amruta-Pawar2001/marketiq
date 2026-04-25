@@ -12,6 +12,24 @@ It uses the Amazon dataset to power XGBoost discount-band prediction and a hybri
 - OpenAI API for grounded response generation, with structured routing for recommendations and analytics
 - Lightweight metrics, health checks, tests, Docker packaging, and the provided MarketIQ HTML dashboard
 
+## App Screenshots
+
+![MarketIQ overview dashboard](images/overview-dashboard.png)
+
+![MarketIQ discount prediction](images/predict-discount.png)
+
+![MarketIQ sentiment analysis](images/sentiment-analysis.png)
+
+![MarketIQ customer segments](images/customer-segments.png)
+
+![MarketIQ assistant](images/ask-marketiq.png)
+
+![MarketIQ RAG explorer](images/rag-explorer.png)
+
+![MarketIQ data pipeline](images/data-pipeline.png)
+
+![MarketIQ model monitoring](images/model-monitoring.png)
+
 ## Setup
 
 ```bash
