@@ -3,9 +3,10 @@ from __future__ import annotations
 import pandas as pd
 
 
-def clean_data(df: pd.DataFrame) -> pd.DataFrame:
+def clean_data(df: pd.DataFrame, drop_duplicate_products: bool = True) -> pd.DataFrame:
     clean = df.copy()
-    clean = clean.drop_duplicates(subset=["product_id"], keep="first")
+    if drop_duplicate_products:
+        clean = clean.drop_duplicates(subset=["product_id"], keep="first")
     clean = clean[clean["actual_price"].notna() & (clean["actual_price"] > 0)]
     clean = clean[clean["discount_percentage"].notna()]
 
@@ -30,6 +31,19 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     text_cols = ["product_name", "about_product", "review_title", "review_content"]
     for col in text_cols:
         clean[col] = clean[col].fillna("").astype(str)
+    defaults = {
+        "brand": "unknown",
+        "subcategory": "unknown",
+        "location": "unknown",
+        "device": "unknown",
+        "payment_method": "unknown",
+        "seller_rating": clean["rating"].median(),
+        "stock": 0,
+        "shipping_time_days": 0,
+        "purchase_date": pd.NaT,
+    }
+    for col, default in defaults.items():
+        if col not in clean:
+            clean[col] = default
 
     return clean.reset_index(drop=True)
-

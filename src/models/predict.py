@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 from src.config import METRICS_PATH, MODEL_PATH
-from src.models.train import train_model
+from src.models.train import BAND_LABELS, BAND_REPRESENTATIVE_DISCOUNT, train_model
 from src.pipeline.clean import clean_data
 from src.pipeline.features import FEATURE_COLUMNS, add_features
 
@@ -52,22 +52,31 @@ def prepare_input(payload: dict) -> pd.DataFrame:
 def predict_discount(payload: dict) -> dict:
     model = load_model()
     X = prepare_input(payload)
-    pred = float(np.clip(model.predict(X)[0], 0, 80))
+    pred_class = int(model.predict(X)[0])
+    band = BAND_LABELS[pred_class]
+    pred = BAND_REPRESENTATIVE_DISCOUNT[band]
+    probabilities = {}
+    if hasattr(model, "predict_proba"):
+        probs = model.predict_proba(X)[0]
+        probabilities = {label: round(float(prob), 3) for label, prob in zip(BAND_LABELS, probs)}
     metrics = {}
     if METRICS_PATH.exists():
         metrics = json.loads(METRICS_PATH.read_text(encoding="utf-8"))
-    confidence = max(0.0, min(1.0, 1.0 - float(metrics.get("mae", 12.0)) / 80.0))
+    confidence = max(probabilities.values()) if probabilities else float(metrics.get("accuracy", 0.0))
     signals = {
-        "actual_price": float(X.iloc[0]["actual_price"]),
+        "log_actual_price": float(X.iloc[0]["log_actual_price"]),
         "rating": float(X.iloc[0]["rating"]),
-        "rating_count": float(X.iloc[0]["rating_count"]),
-        "price_ratio": float(X.iloc[0]["price_ratio"]),
+        "log_rating_count": float(X.iloc[0]["log_rating_count"]),
         "main_category": str(X.iloc[0]["main_category"]),
+        "sub_category": str(X.iloc[0]["sub_category"]),
+        "price_bin": str(X.iloc[0]["price_bin"]),
+        "discount_band": band,
+        "band_probabilities": probabilities,
     }
     return {
         "discount_pct": round(pred, 2),
+        "discount_band": band,
         "confidence": round(confidence, 3),
-        "model_version": "xgboost-v1",
+        "model_version": "xgboost-band-v1",
         "feature_signals": signals,
     }
-

@@ -69,7 +69,7 @@ def test_overview_metrics_shape(monkeypatch):
     monkeypatch.setattr(overview_module, "load_model", lambda: FakeModel())
     monkeypatch.setattr(overview_module, "analyze_text", lambda text: {"sentiment_score": 0.5})
     metrics = overview_metrics(sentiment_sample=1)
-    assert metrics["avg_predicted_discount"] == 25.0
+    assert metrics["avg_predicted_discount"] == 35.0
     assert metrics["avg_sentiment_score"] == 0.5
 
 

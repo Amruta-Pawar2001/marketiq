@@ -52,17 +52,25 @@ def test_answer_question(monkeypatch):
     monkeypatch.setattr(
         answer_route,
         "answer_question",
-        lambda question, top_k=5: {
+        lambda question, top_k=5, history=None: {
             "answer": "A cable is relevant.",
             "sources": [{"product_id": "p1"}],
             "contexts": [],
-            "filters_used": {},
+            "filters_used": {"history_count": len(history or [])},
             "factuality_score": 0.8,
         },
     )
-    response = client.post("/answer_question", json={"question": "What cable should I buy?", "top_k": 3})
+    response = client.post(
+        "/answer_question",
+        json={
+            "question": "What about under 1000?",
+            "top_k": 3,
+            "history": [{"role": "user", "content": "What cable should I buy?"}],
+        },
+    )
     assert response.status_code == 200
     assert response.json()["sources"][0]["product_id"] == "p1"
+    assert response.json()["filters_used"]["history_count"] == 1
 
 
 def test_top_products(monkeypatch):

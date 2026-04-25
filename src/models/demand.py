@@ -14,6 +14,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from xgboost import XGBRegressor
 
 from src.config import DEMAND_METRICS_PATH, DEMAND_MODEL_PATH, ensure_dirs
+from src.models.train import CATEGORICAL_FEATURES, NUMERIC_FEATURES
 from src.pipeline.clean import clean_data
 from src.pipeline.features import FEATURE_COLUMNS, add_features
 from src.pipeline.ingest import ingest
@@ -35,8 +36,8 @@ def train_demand_model() -> dict:
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     preprocessor = ColumnTransformer(
         [
-            ("num", StandardScaler(), [c for c in FEATURE_COLUMNS if c not in ["rating_bin", "main_category"]]),
-            ("cat", OneHotEncoder(handle_unknown="ignore"), ["rating_bin", "main_category"]),
+            ("num", StandardScaler(), NUMERIC_FEATURES),
+            ("cat", OneHotEncoder(handle_unknown="ignore"), CATEGORICAL_FEATURES),
         ]
     )
     model = Pipeline(
@@ -71,4 +72,3 @@ def predict_demand(payload: dict) -> dict:
 
 if __name__ == "__main__":
     print(json.dumps(train_demand_model(), indent=2))
-

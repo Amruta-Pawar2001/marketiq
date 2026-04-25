@@ -22,4 +22,3 @@ def build_processed_splits(test_size: float = 0.2, random_state: int = 42) -> tu
 if __name__ == "__main__":
     train, test = build_processed_splits()
     print(f"Saved train={len(train)} rows, test={len(test)} rows")
-

@@ -17,6 +17,7 @@ from src.config import (
     TEXTS_PATH,
 )
 from src.models.predict import load_model
+from src.models.train import representative_discounts_from_predictions
 from src.monitoring.drift import drift_report
 from src.monitoring.metrics import snapshot
 from src.pipeline.clean import clean_data
@@ -29,7 +30,7 @@ from src.sentiment.analyzer import analyze_text, review_text
 
 def discount_distribution() -> dict:
     df = add_features(clean_data(ingest()))
-    preds = np.clip(load_model().predict(df[FEATURE_COLUMNS]), 0, 80)
+    preds = representative_discounts_from_predictions(load_model().predict(df[FEATURE_COLUMNS]))
     work = df.assign(predicted_discount=preds)
     grouped = (
         work.groupby("main_category")
@@ -49,12 +50,16 @@ def model_health() -> dict:
 
         metrics = json.loads(METRICS_PATH.read_text(encoding="utf-8"))
     return {
-        "rmse": round(float(metrics.get("rmse", 0)), 4),
-        "mae": round(float(metrics.get("mae", 0)), 4),
-        "r2": round(float(metrics.get("r2", 0)), 4),
+        "rmse": 0,
+        "mae": 0,
+        "r2": 0,
+        "accuracy": round(float(metrics.get("accuracy", 0)), 4),
+        "f1_macro": round(float(metrics.get("f1_macro", 0)), 4),
+        "precision_macro": round(float(metrics.get("precision_macro", 0)), 4),
+        "recall_macro": round(float(metrics.get("recall_macro", 0)), 4),
         "train_rows": int(metrics.get("train_rows", 0)),
         "test_rows": int(metrics.get("test_rows", 0)),
-        "model": "XGBoost discount regressor",
+        "model": "XGBoost discount band classifier",
     }
 
 

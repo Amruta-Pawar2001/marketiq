@@ -13,7 +13,7 @@ router = APIRouter(tags=["assistant"])
 @router.post("/answer_question", response_model=AskResponse)
 def answer_question_route(payload: AskRequest) -> dict:
     with track("answer_question"):
-        return answer_question(payload.question, top_k=payload.top_k)
+        return answer_question(payload.question, top_k=payload.top_k, history=payload.history)
 
 
 @router.post("/rag_trace")

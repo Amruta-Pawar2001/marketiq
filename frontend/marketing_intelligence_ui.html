@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MarketIQ — Marketing Data Intelligence Platform</title>
+<title>MarketIQ - Marketing Data Intelligence Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -207,7 +207,7 @@
   .pipe-step { flex: 1; background: var(--surface2); border: 1px solid var(--border); padding: 14px 12px; position: relative; }
   .pipe-step:first-child { border-radius: 10px 0 0 10px; }
   .pipe-step:last-child { border-radius: 0 10px 10px 0; }
-  .pipe-step:not(:last-child)::after { content: '›'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; z-index: 1; }
+  .pipe-step:not(:last-child)::after { content: '>'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 18px; z-index: 1; }
   .pipe-name { font-size: 11px; font-weight: 700; margin-bottom: 4px; }
   .pipe-tech { font-family: var(--font-mono); font-size: 9px; color: var(--muted); }
   .pipe-status { width: 7px; height: 7px; border-radius: 50%; margin-bottom: 8px; }
@@ -255,7 +255,7 @@
     <div class="model-badge" style="color:var(--text);font-weight:500;margin-top:2px;">XGBoost + OpenAI RAG</div>
     <div class="model-status">
       <div class="pulse"></div>
-      <span class="model-badge">API live · 98ms avg</span>
+      <span class="model-badge">API live - 98ms avg</span>
     </div>
   </div>
 </aside>
@@ -263,12 +263,12 @@
 <!-- MAIN CONTENT -->
 <main class="main">
 
-  <!-- ═══ PAGE: DASHBOARD ═══ -->
+  <!-- === PAGE: DASHBOARD === -->
   <div class="page active" id="page-dashboard">
     <div class="topbar">
       <div>
         <div class="page-title">Overview <span>dashboard</span></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Amazon Sales Dataset · 1,465 products · Updated 2h ago</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Amazon Sales Dataset - 1,465 products - Updated 2h ago</div>
       </div>
       <div class="topbar-actions">
         <div class="chip">Last 30 days</div>
@@ -278,24 +278,24 @@
 
     <div class="metric-row">
       <div class="metric-card" style="--accent-bar:var(--accent)">
-        <div class="metric-label">Avg predicted discount · live</div>
+        <div class="metric-label">Avg predicted discount - live</div>
         <div class="metric-value" id="overview-discount">--<span style="font-size:16px;color:var(--muted)">%</span></div>
         <div class="metric-delta delta-up" id="overview-discount-meta">XGBoost across catalog</div>
       </div>
       <div class="metric-card" style="--accent-bar:var(--accent2)">
-        <div class="metric-label">Avg sentiment score · live</div>
+        <div class="metric-label">Avg sentiment score - live</div>
         <div class="metric-value" id="overview-sentiment">--</div>
         <div class="metric-delta delta-up" id="overview-sentiment-meta">Review sentiment sample</div>
       </div>
       <div class="metric-card" style="--accent-bar:var(--accent4)">
-        <div class="metric-label">Model accuracy (R²) · live</div>
+        <div class="metric-label">Band accuracy - live</div>
         <div class="metric-value" id="overview-r2">--</div>
-        <div class="metric-delta delta-up" id="overview-r2-meta">Saved evaluation metric</div>
+        <div class="metric-delta delta-up" id="overview-r2-meta">Discount band classifier</div>
       </div>
       <div class="metric-card" style="--accent-bar:var(--accent3)">
-        <div class="metric-label">RAG factuality rate · evaluation</div>
-        <div class="metric-value" id="overview-rag">N/A</div>
-        <div class="metric-delta delta-down" id="overview-rag-meta">Needs eval set</div>
+        <div class="metric-label">Avg market traction - live</div>
+        <div class="metric-value" id="overview-traction">--</div>
+        <div class="metric-delta delta-up" id="overview-traction-meta">Demand proxy across catalog</div>
       </div>
     </div>
 
@@ -314,7 +314,7 @@
           <div class="panel-tag tag-data">Future scope</div>
         </div>
         <div class="sparkline" id="sparkline"></div>
-        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:8px;">Last 24 weeks · all categories</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:8px;">Last 24 weeks - all categories</div>
         <div style="margin-top:14px;">
           <div style="font-size:11px;font-weight:700;margin-bottom:8px;">Top movers this week</div>
           <div style="display:flex;flex-direction:column;gap:6px;">
@@ -329,17 +329,17 @@
     <div class="two-col">
       <div class="panel">
         <div class="panel-head">
-          <div class="panel-title">Top products · predicted vs actual discount</div>
+          <div class="panel-title">Top products - predicted vs actual discount</div>
           <div class="panel-tag tag-ml">Live endpoint</div>
         </div>
         <table class="prod-table">
-          <thead><tr><th>Product</th><th>Actual %</th><th>Predicted %</th><th>Sentiment</th><th>Flag</th></tr></thead>
+          <thead><tr><th>Product</th><th>Actual %</th><th>Predicted %</th><th>Sentiment</th><th>Traction</th><th>Flag</th></tr></thead>
           <tbody id="top-products-body">
-            <tr><td style="color:var(--text);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">USB-C Hub 7-in-1</td><td>45%</td><td>43%</td><td><div class="score-bar"><div class="score-fill" style="width:82%"></div></div></td><td><span class="badge b-green">Good</span></td></tr>
-            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Yoga Mat Premium</td><td>30%</td><td>38%</td><td><div class="score-bar"><div class="score-fill" style="width:61%"></div></div></td><td><span class="badge b-yellow">Drift</span></td></tr>
-            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Stainless Steel Bottle</td><td>22%</td><td>21%</td><td><div class="score-bar"><div class="score-fill" style="width:75%"></div></div></td><td><span class="badge b-green">Good</span></td></tr>
-            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Bluetooth Speaker</td><td>60%</td><td>47%</td><td><div class="score-bar"><div class="score-fill" style="width:44%"></div></div></td><td><span class="badge b-red">Review</span></td></tr>
-            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Laptop Stand Adj.</td><td>35%</td><td>34%</td><td><div class="score-bar"><div class="score-fill" style="width:88%"></div></div></td><td><span class="badge b-green">Good</span></td></tr>
+            <tr><td style="color:var(--text);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">USB-C Hub 7-in-1</td><td>45%</td><td>43%</td><td><div class="score-bar"><div class="score-fill" style="width:82%"></div></div></td><td><span class="badge b-green">High</span></td><td><span class="badge b-green">Good</span></td></tr>
+            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Yoga Mat Premium</td><td>30%</td><td>38%</td><td><div class="score-bar"><div class="score-fill" style="width:61%"></div></div></td><td><span class="badge b-yellow">Med</span></td><td><span class="badge b-yellow">Drift</span></td></tr>
+            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Stainless Steel Bottle</td><td>22%</td><td>21%</td><td><div class="score-bar"><div class="score-fill" style="width:75%"></div></div></td><td><span class="badge b-green">High</span></td><td><span class="badge b-green">Good</span></td></tr>
+            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Bluetooth Speaker</td><td>60%</td><td>47%</td><td><div class="score-bar"><div class="score-fill" style="width:44%"></div></div></td><td><span class="badge b-yellow">Med</span></td><td><span class="badge b-red">Review</span></td></tr>
+            <tr><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Laptop Stand Adj.</td><td>35%</td><td>34%</td><td><div class="score-bar"><div class="score-fill" style="width:88%"></div></div></td><td><span class="badge b-green">High</span></td><td><span class="badge b-green">Good</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -352,23 +352,23 @@
           <div style="display:flex;align-items:center;gap:12px;">
             <div style="width:36px;height:36px;border-radius:8px;background:rgba(79,255,176,0.12);border:1px solid rgba(79,255,176,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--accent);">A</div>
             <div style="flex:1">
-              <div style="font-size:12px;font-weight:700">Champions · 18%</div>
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">High RFM · avg CLV ₹12,400</div>
+              <div style="font-size:12px;font-weight:700">Champions - 18%</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">High RFM - avg CLV Rs.12,400</div>
             </div>
             <div class="sparkline" style="height:28px;width:60px;" id="sp-a"></div>
           </div>
           <div style="display:flex;align-items:center;gap:12px;">
             <div style="width:36px;height:36px;border-radius:8px;background:rgba(123,97,255,0.12);border:1px solid rgba(123,97,255,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--accent2);">B</div>
             <div style="flex:1">
-              <div style="font-size:12px;font-weight:700">Loyal customers · 29%</div>
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Frequent · avg CLV ₹6,200</div>
+              <div style="font-size:12px;font-weight:700">Loyal customers - 29%</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Frequent - avg CLV Rs.6,200</div>
             </div>
             <div class="sparkline" style="height:28px;width:60px;" id="sp-b"></div>
           </div>
           <div style="display:flex;align-items:center;gap:12px;">
             <div style="width:36px;height:36px;border-radius:8px;background:rgba(255,209,102,0.12);border:1px solid rgba(255,209,102,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--accent4);">C</div>
             <div style="flex:1">
-              <div style="font-size:12px;font-weight:700">At risk · 21%</div>
+              <div style="font-size:12px;font-weight:700">At risk - 21%</div>
               <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Declining frequency</div>
             </div>
             <div class="sparkline" style="height:28px;width:60px;" id="sp-c"></div>
@@ -376,8 +376,8 @@
           <div style="display:flex;align-items:center;gap:12px;">
             <div style="width:36px;height:36px;border-radius:8px;background:rgba(255,107,107,0.12);border:1px solid rgba(255,107,107,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--accent3);">D</div>
             <div style="flex:1">
-              <div style="font-size:12px;font-weight:700">New / cold · 32%</div>
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Low engagement · 1-2 orders</div>
+              <div style="font-size:12px;font-weight:700">New / cold - 32%</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted)">Low engagement - 1-2 orders</div>
             </div>
             <div class="sparkline" style="height:28px;width:60px;" id="sp-d"></div>
           </div>
@@ -386,12 +386,12 @@
     </div>
   </div>
 
-  <!-- ═══ PAGE: PREDICT DISCOUNT ═══ -->
+  <!-- === PAGE: PREDICT DISCOUNT === -->
   <div class="page" id="page-prediction">
     <div class="topbar">
       <div>
         <div class="page-title">Predict <span>discount</span></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">XGBoost regression · RMSE 3.2 · R² 0.87</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">XGBoost classification - low / medium / high discount bands</div>
       </div>
       <div class="topbar-actions"><div class="chip">XGBoost v1</div></div>
     </div>
@@ -406,8 +406,8 @@
           <div class="field-group"><label>Category</label>
             <select id="cat-sel"><option>Electronics</option><option>Home & Kitchen</option><option>Sports</option><option>Clothing</option><option>Books</option></select>
           </div>
-          <div class="field-group"><label>Actual price (₹)</label><input type="number" id="f-price" value="2499" /></div>
-          <div class="field-group"><label>Rating (1–5)</label><input type="number" id="f-rating" value="4.2" step="0.1" min="1" max="5" /></div>
+          <div class="field-group"><label>Actual price (Rs.)</label><input type="number" id="f-price" value="2499" /></div>
+          <div class="field-group"><label>Rating (1-5)</label><input type="number" id="f-rating" value="4.2" step="0.1" min="1" max="5" /></div>
           <div class="field-group"><label>No. of ratings</label><input type="number" id="f-reviews" value="1240" /></div>
           <div class="field-group"><label>Brand tier</label>
             <select id="brand-tier"><option>Premium</option><option>Mid-range</option><option>Budget</option></select>
@@ -428,8 +428,8 @@
             <div class="shap-row"><span class="shap-label">Price</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:85%;background:var(--accent)"></div></div><span class="shap-val">+0.42</span></div>
             <div class="shap-row"><span class="shap-label">Rating</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:62%;background:var(--accent2)"></div></div><span class="shap-val">+0.31</span></div>
             <div class="shap-row"><span class="shap-label">Reviews</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:48%;background:var(--accent4)"></div></div><span class="shap-val">+0.24</span></div>
-            <div class="shap-row"><span class="shap-label">Category</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:30%;background:var(--accent3)"></div></div><span class="shap-val">−0.15</span></div>
-            <div class="shap-row"><span class="shap-label">Brand tier</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:18%;background:var(--dim)"></div></div><span class="shap-val">−0.09</span></div>
+            <div class="shap-row"><span class="shap-label">Category</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:30%;background:var(--accent3)"></div></div><span class="shap-val">-0.15</span></div>
+            <div class="shap-row"><span class="shap-label">Brand tier</span><div class="shap-bar-wrap"><div class="shap-bar" style="width:18%;background:var(--dim)"></div></div><span class="shap-val">-0.09</span></div>
           </div>
         </div>
       </div>
@@ -438,16 +438,16 @@
         <div class="panel">
           <div class="panel-head"><div class="panel-title">Model health</div><div class="panel-tag tag-data">Live metrics</div></div>
           <div style="display:flex;flex-direction:column;gap:10px;">
-            <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">RMSE</span><span>3.21</span></div><div class="gauge"><div class="gauge-fill" style="width:68%;background:var(--accent)"></div></div></div>
-            <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">MAE</span><span>2.44</span></div><div class="gauge"><div class="gauge-fill" style="width:76%;background:var(--accent2)"></div></div></div>
-            <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">R²</span><span>0.87</span></div><div class="gauge"><div class="gauge-fill" style="width:87%;background:var(--accent4)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">Accuracy</span><span>--</span></div><div class="gauge"><div class="gauge-fill" style="width:5%;background:var(--accent)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">F1 macro</span><span>--</span></div><div class="gauge"><div class="gauge-fill" style="width:5%;background:var(--accent2)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px;"><span style="color:var(--muted)">Recall</span><span>--</span></div><div class="gauge"><div class="gauge-fill" style="width:5%;background:var(--accent4)"></div></div></div>
           </div>
         </div>
         <div class="panel">
           <div class="panel-head"><div class="panel-title">API endpoint</div><div class="panel-tag tag-ops">FastAPI</div></div>
           <div style="background:var(--bg);border-radius:8px;padding:12px;font-family:var(--font-mono);font-size:11px;color:var(--accent);line-height:1.8;">
             POST /predict_discount<br>
-            <span style="color:var(--muted)">→ {"discount_pct": 34,</span><br>
+            <span style="color:var(--muted)">-> {"discount_pct": 34,</span><br>
             <span style="color:var(--muted)">&nbsp;&nbsp;"confidence": 0.89,</span><br>
             <span style="color:var(--muted)">&nbsp;&nbsp;"shap": {...}}</span>
           </div>
@@ -456,18 +456,18 @@
     </div>
   </div>
 
-  <!-- ═══ PAGE: SENTIMENT ═══ -->
+  <!-- === PAGE: SENTIMENT === -->
   <div class="page" id="page-sentiment">
     <div class="topbar">
       <div>
         <div class="page-title">Sentiment <span>analysis</span></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Aspect-based · 12,840 reviews processed</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Aspect-based - 12,840 reviews processed</div>
       </div>
       <div class="topbar-actions"><div class="chip">TF-IDF live endpoint</div></div>
     </div>
 
     <div class="panel" style="margin-bottom:16px;">
-      <div class="panel-head"><div class="panel-title">Sentiment heatmap — product × attribute</div><div class="panel-tag tag-nlp">Live endpoint</div></div>
+      <div class="panel-head"><div class="panel-title">Sentiment heatmap - product x attribute</div><div class="panel-tag tag-nlp">Live endpoint</div></div>
       <div style="overflow-x:auto;">
         <div id="heatmap-container"></div>
       </div>
@@ -477,22 +477,22 @@
       <div class="panel">
         <div class="panel-head"><div class="panel-title">Recent review insights</div><div class="panel-tag tag-data">Live endpoint</div></div>
         <div id="review-insights" style="display:flex;flex-direction:column;gap:12px;"><div style="padding:12px;background:rgba(79,255,176,0.05);border:1px solid rgba(79,255,176,0.15);border-radius:10px;">
-            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:4px;">POSITIVE · USB-C Hub</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:4px;">POSITIVE - USB-C Hub</div>
             <div style="font-size:12px;line-height:1.6;color:var(--muted);">"Customers consistently praise the <strong style="color:var(--text)">build quality</strong> and <strong style="color:var(--text)">charging speed</strong>. 87% mention fast delivery."</div>
           </div>
           <div style="padding:12px;background:rgba(255,107,107,0.05);border:1px solid rgba(255,107,107,0.15);border-radius:10px;">
-            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent3);margin-bottom:4px;">NEGATIVE · Bluetooth Speaker</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent3);margin-bottom:4px;">NEGATIVE - Bluetooth Speaker</div>
             <div style="font-size:12px;line-height:1.6;color:var(--muted);">"Recurring complaints about <strong style="color:var(--text)">battery life</strong> (avg 3.2/5) and <strong style="color:var(--text)">connectivity drops</strong> after 3 months."</div>
           </div>
           <div style="padding:12px;background:rgba(255,209,102,0.05);border:1px solid rgba(255,209,102,0.15);border-radius:10px;">
-            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent4);margin-bottom:4px;">MIXED · Yoga Mat</div>
-            <div style="font-size:12px;line-height:1.6;color:var(--muted);">"Split opinion on <strong style="color:var(--text)">thickness</strong> — premium buyers prefer 6mm+. Price-to-value scores high."</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent4);margin-bottom:4px;">MIXED - Yoga Mat</div>
+            <div style="font-size:12px;line-height:1.6;color:var(--muted);">"Split opinion on <strong style="color:var(--text)">thickness</strong> - premium buyers prefer 6mm+. Price-to-value scores high."</div>
           </div>
         </div>
       </div>
       <div class="panel">
         <div class="panel-head"><div class="panel-title">Sentiment over time</div><div class="panel-tag tag-data">Future scope</div></div>
-        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:12px;">Weekly average · all products</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-bottom:12px;">Weekly average - all products</div>
         <div class="bar-chart" id="sent-bars" style="height:120px;"></div>
         <div class="bar-labels" id="sent-labels"></div>
         <div style="margin-top:14px;display:flex;gap:16px;">
@@ -504,7 +504,7 @@
     </div>
   </div>
 
-  <!-- ═══ PAGE: SEGMENTS ═══ -->
+  <!-- === PAGE: SEGMENTS === -->
   <div class="page" id="page-segments">
     <div class="topbar">
       <div>
@@ -516,61 +516,61 @@
     <div class="seg-grid" style="margin-bottom:16px;">
       <div class="seg-card" style="border-color:rgba(79,255,176,0.3);">
         <div style="color:var(--accent)" class="seg-name">Champions</div>
-        <div class="seg-count">234 customers · 18%</div>
+        <div class="seg-count">234 customers - 18%</div>
         <div class="seg-stats">
-          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹12,400</span></div>
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">Rs.12,400</span></div>
           <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">4.8</span></div>
           <div class="seg-stat"><span>Churn risk</span><span style="color:var(--accent)">Low</span></div>
         </div>
       </div>
       <div class="seg-card" style="border-color:rgba(123,97,255,0.3);">
         <div style="color:var(--accent2)" class="seg-name">Loyal customers</div>
-        <div class="seg-count">378 customers · 29%</div>
+        <div class="seg-count">378 customers - 29%</div>
         <div class="seg-stats">
-          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹6,200</span></div>
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">Rs.6,200</span></div>
           <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">2.3</span></div>
           <div class="seg-stat"><span>Churn risk</span><span style="color:var(--accent)">Low</span></div>
         </div>
       </div>
       <div class="seg-card" style="border-color:rgba(255,209,102,0.3);">
         <div style="color:var(--accent4)" class="seg-name">Potential loyalists</div>
-        <div class="seg-count">156 customers · 12%</div>
+        <div class="seg-count">156 customers - 12%</div>
         <div class="seg-stats">
-          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹3,800</span></div>
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">Rs.3,800</span></div>
           <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">1.6</span></div>
           <div class="seg-stat"><span>Churn risk</span><span style="color:var(--accent4)">Med</span></div>
         </div>
       </div>
       <div class="seg-card" style="border-color:rgba(255,209,102,0.3);">
         <div style="color:var(--accent4)" class="seg-name">At risk</div>
-        <div class="seg-count">273 customers · 21%</div>
+        <div class="seg-count">273 customers - 21%</div>
         <div class="seg-stats">
-          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹2,100</span></div>
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">Rs.2,100</span></div>
           <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">0.4</span></div>
           <div class="seg-stat"><span>Churn risk</span><span style="color:var(--accent4)">High</span></div>
         </div>
       </div>
       <div class="seg-card" style="border-color:rgba(255,107,107,0.3);">
         <div style="color:var(--accent3)" class="seg-name">Lost</div>
-        <div class="seg-count">104 customers · 8%</div>
+        <div class="seg-count">104 customers - 8%</div>
         <div class="seg-stats">
-          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹900</span></div>
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">Rs.900</span></div>
           <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">0.1</span></div>
           <div class="seg-stat"><span>Churn risk</span><span style="color:var(--accent3)">Very high</span></div>
         </div>
       </div>
       <div class="seg-card">
         <div class="seg-name">New customers</div>
-        <div class="seg-count">156 customers · 12%</div>
+        <div class="seg-count">156 customers - 12%</div>
         <div class="seg-stats">
-          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">₹480</span></div>
+          <div class="seg-stat"><span>Avg CLV</span><span style="color:var(--text)">Rs.480</span></div>
           <div class="seg-stat"><span>Orders/mo</span><span style="color:var(--text)">0.8</span></div>
           <div class="seg-stat"><span>Churn risk</span><span style="color:var(--muted)">Unknown</span></div>
         </div>
       </div>
     </div>
     <div class="panel">
-      <div class="panel-head"><div class="panel-title">Segment action recommendations · LLM-generated</div><div class="panel-tag tag-data">Planned</div></div>
+      <div class="panel-head"><div class="panel-title">Segment action recommendations - LLM-generated</div><div class="panel-tag tag-data">Planned</div></div>
       <div id="segment-actions" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;"><div style="padding:14px;background:rgba(79,255,176,0.04);border-radius:10px;border:1px solid rgba(79,255,176,0.15);">
           <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:6px;">CHAMPIONS</div>
           <div style="font-size:12px;line-height:1.6;color:var(--muted);">Offer early access to new products. Loyalty tier upgrade with exclusive 5% extra discount.</div>
@@ -587,32 +587,32 @@
     </div>
   </div>
 
-  <!-- ═══ PAGE: ASSISTANT ═══ -->
+  <!-- === PAGE: ASSISTANT === -->
   <div class="page" id="page-assistant">
     <div class="topbar">
       <div>
         <div class="page-title">Ask <span>MarketIQ</span></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">OpenAI API · FAISS · all-MiniLM-L6-v2</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">OpenAI API - FAISS - all-MiniLM-L6-v2</div>
       </div>
     </div>
     <div class="panel" style="max-width:720px;">
       <div class="chat-area" id="chat-area">
         <div class="msg msg-ai">
           <div class="msg-bubble">Hi! I'm MarketIQ, your e-commerce intelligence assistant. I'm trained on your product catalogue and can answer questions about discounts, customer behaviour, product performance, and market trends. What would you like to know?</div>
-          <div class="msg-meta">MarketIQ · OpenAI + FAISS RAG</div>
+          <div class="msg-meta">MarketIQ - OpenAI + FAISS RAG</div>
         </div>
         <div class="msg msg-user">
           <div class="msg-bubble">Which product category should we discount the most this weekend?</div>
-          <div class="msg-meta">You · just now</div>
+          <div class="msg-meta">You - just now</div>
         </div>
         <div class="msg msg-ai">
-          <div class="msg-bubble">Based on your sales data and model predictions, <strong>Electronics</strong> shows the highest price elasticity this week — a 10% discount is projected to lift conversion by ~18%. Home & Kitchen is also performing well with sentiment score 0.74.<br><br>Avoid heavy discounting on <strong>Clothing</strong> — sentiment is mixed and current stock levels are already low, so margin protection matters more.</div>
+          <div class="msg-bubble">Based on your sales data and model predictions, <strong>Electronics</strong> shows the highest price elasticity this week - a 10% discount is projected to lift conversion by ~18%. Home & Kitchen is also performing well with sentiment score 0.74.<br><br>Avoid heavy discounting on <strong>Clothing</strong> - sentiment is mixed and current stock levels are already low, so margin protection matters more.</div>
           <div style="margin-top:8px;">
             <span class="source-pill">sales_data.csv</span>
             <span class="source-pill">product_metadata.json</span>
             <span class="source-pill">model_output_v2.json</span>
           </div>
-          <div class="msg-meta">MarketIQ · grounded · 3 sources</div>
+          <div class="msg-meta">MarketIQ - grounded - 3 sources</div>
         </div>
       </div>
       <div class="chat-input-row">
@@ -627,12 +627,12 @@
     </div>
   </div>
 
-  <!-- ═══ PAGE: RAG EXPLORER ═══ -->
+  <!-- === PAGE: RAG EXPLORER === -->
   <div class="page" id="page-rag">
     <div class="topbar">
       <div>
         <div class="page-title">RAG <span>explorer</span></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Live FAISS retrieval trace · all-MiniLM-L6-v2</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">Live FAISS retrieval trace - all-MiniLM-L6-v2</div>
       </div>
     </div>
     <div class="two-col">
@@ -648,25 +648,25 @@
             <div style="color:var(--text);">"Which USB products have quality complaints?"</div>
           </div>
           <div style="background:var(--bg);border-radius:8px;padding:12px;font-family:var(--font-mono);font-size:11px;">
-            <div style="color:var(--muted);margin-bottom:4px;">EMBEDDING → cosine search</div>
-            <div style="color:var(--accent);">Retrieved 5 chunks · sim > 0.78</div>
+            <div style="color:var(--muted);margin-bottom:4px;">EMBEDDING -> cosine search</div>
+            <div style="color:var(--accent);">Retrieved 5 chunks - sim > 0.78</div>
           </div>
           <div style="display:flex;flex-direction:column;gap:6px;">
             <div style="font-size:11px;font-weight:700;margin-bottom:4px;">Retrieved chunks</div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.15);border-radius:8px;">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">review_1824 · Electronics</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">review_1824 - Electronics</div>
               <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);">sim 0.94</div>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.1);border-radius:8px;">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">review_0993 · Electronics</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">review_0993 - Electronics</div>
               <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);">sim 0.91</div>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(123,97,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:8px;">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">product_desc_412 · Accessories</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">product_desc_412 - Accessories</div>
               <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent2);">sim 0.83</div>
             </div>
             <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(123,97,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:8px;">
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">faq_returns_87 · Policy</div>
+              <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">faq_returns_87 - Policy</div>
               <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent2);">sim 0.79</div>
             </div>
           </div>
@@ -705,23 +705,23 @@
     </div>
   </div>
 
-  <!-- ═══ PAGE: PIPELINE ═══ -->
+  <!-- === PAGE: PIPELINE === -->
   <div class="page" id="page-pipeline">
     <div class="topbar">
       <div>
         <div class="page-title">Data <span>pipeline</span></div>
-        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">End-to-end · all systems operational</div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;">End-to-end - all systems operational</div>
       </div>
     </div>
     <div class="panel" style="margin-bottom:16px;">
-      <div class="panel-head"><div class="panel-title">Ingestion → model → API</div><div class="panel-tag tag-ops">Implementation map</div></div>
+      <div class="panel-head"><div class="panel-title">Ingestion -> model -> API</div><div class="panel-tag tag-ops">Implementation map</div></div>
       <div class="pipeline-steps">
-        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Raw ingestion</div><div class="pipe-tech">Kaggle CSV · Pandas</div></div>
-        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">EDA + clean</div><div class="pipe-tech">Null impute · outliers</div></div>
-        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Feature eng.</div><div class="pipe-tech">Encoding · scaling</div></div>
-        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Model train</div><div class="pipe-tech">XGBoost · sentiment · segments</div></div>
-        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Vector index</div><div class="pipe-tech">MiniLM → FAISS</div></div>
-        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">FastAPI serve</div><div class="pipe-tech">Docker · /predict</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Raw ingestion</div><div class="pipe-tech">Kaggle CSV - Pandas</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">EDA + clean</div><div class="pipe-tech">Null impute - outliers</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Feature eng.</div><div class="pipe-tech">Encoding - scaling</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Model train</div><div class="pipe-tech">XGBoost - sentiment - segments</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">Vector index</div><div class="pipe-tech">MiniLM -> FAISS</div></div>
+        <div class="pipe-step"><div class="pipe-status status-ok"></div><div class="pipe-name">FastAPI serve</div><div class="pipe-tech">Docker - /predict</div></div>
       </div>
     </div>
     <div class="two-col">
@@ -729,15 +729,15 @@
         <div class="panel-head"><div class="panel-title">Package architecture</div><div class="panel-tag tag-ops">How it all fits</div></div>
         <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);line-height:2;">
           <div style="color:var(--accent);">marketiq/</div>
-          <div>&nbsp;&nbsp;data/ &nbsp;<span style="color:var(--dim)">← raw + processed datasets</span></div>
-          <div>&nbsp;&nbsp;notebooks/ &nbsp;<span style="color:var(--dim)">← EDA, experiments</span></div>
+          <div>&nbsp;&nbsp;data/ &nbsp;<span style="color:var(--dim)"><- raw + processed datasets</span></div>
+          <div>&nbsp;&nbsp;notebooks/ &nbsp;<span style="color:var(--dim)"><- EDA, experiments</span></div>
           <div>&nbsp;&nbsp;src/</div>
-          <div>&nbsp;&nbsp;&nbsp;&nbsp;pipeline/ &nbsp;<span style="color:var(--dim)">← ingestion, features</span></div>
-          <div>&nbsp;&nbsp;&nbsp;&nbsp;models/ &nbsp;<span style="color:var(--dim)">← train, predict, evaluate</span></div>
-          <div>&nbsp;&nbsp;&nbsp;&nbsp;rag/ &nbsp;<span style="color:var(--dim)">← embed, retrieve, generate</span></div>
-          <div>&nbsp;&nbsp;&nbsp;&nbsp;api/ &nbsp;<span style="color:var(--dim)">← FastAPI routes</span></div>
-          <div>&nbsp;&nbsp;&nbsp;&nbsp;monitoring/ &nbsp;<span style="color:var(--dim)">← drift, metrics</span></div>
-          <div>&nbsp;&nbsp;tests/ &nbsp;<span style="color:var(--dim)">← unit + integration</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;pipeline/ &nbsp;<span style="color:var(--dim)"><- ingestion, features</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;models/ &nbsp;<span style="color:var(--dim)"><- train, predict, evaluate</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;rag/ &nbsp;<span style="color:var(--dim)"><- embed, retrieve, generate</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;api/ &nbsp;<span style="color:var(--dim)"><- FastAPI routes</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;monitoring/ &nbsp;<span style="color:var(--dim)"><- drift, metrics</span></div>
+          <div>&nbsp;&nbsp;tests/ &nbsp;<span style="color:var(--dim)"><- unit + integration</span></div>
           <div>&nbsp;&nbsp;Dockerfile</div>
           <div>&nbsp;&nbsp;docker-compose.yml</div>
           <div>&nbsp;&nbsp;mlflow.yaml</div>
@@ -747,19 +747,19 @@
         <div class="panel-head"><div class="panel-title">Docker services</div><div class="panel-tag tag-data">Live config</div></div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.15);border-radius:8px;">
-            <div><div style="font-size:12px;font-weight:700;">api</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">FastAPI · port 8000</div></div>
+            <div><div style="font-size:12px;font-weight:700;">api</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">FastAPI - port 8000</div></div>
             <span class="badge b-green">Running</span>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.15);border-radius:8px;">
-            <div><div style="font-size:12px;font-weight:700;">XGBoost</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Tracking · port 5000</div></div>
+            <div><div style="font-size:12px;font-weight:700;">XGBoost</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Tracking - port 5000</div></div>
             <span class="badge b-green">Running</span>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.15);border-radius:8px;">
-            <div><div style="font-size:12px;font-weight:700;">chromadb</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Vector store · port 8001</div></div>
+            <div><div style="font-size:12px;font-weight:700;">chromadb</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Vector store - port 8001</div></div>
             <span class="badge b-green">Running</span>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(255,209,102,0.04);border:1px solid rgba(255,209,102,0.15);border-radius:8px;">
-            <div><div style="font-size:12px;font-weight:700;">prometheus</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Metrics · port 9090</div></div>
+            <div><div style="font-size:12px;font-weight:700;">prometheus</div><div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">Metrics - port 9090</div></div>
             <span class="badge b-yellow">Starting</span>
           </div>
         </div>
@@ -767,7 +767,7 @@
     </div>
   </div>
 
-  <!-- ═══ PAGE: MONITORING ═══ -->
+  <!-- === PAGE: MONITORING === -->
   <div class="page" id="page-monitoring">
     <div class="topbar">
       <div>
@@ -788,19 +788,19 @@
       <div class="panel">
         <div class="panel-head"><div class="panel-title">Feature drift monitor</div><div class="panel-tag tag-data">Live drift</div></div>
         <div id="feature-drift-list" style="display:flex;flex-direction:column;gap:10px;"><div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:8px;"><div style="font-family:var(--font-mono);font-size:11px;">actual_price</div>
-            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:12%;background:var(--accent)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent)">0.12 · OK</span></div>
+            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:12%;background:var(--accent)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent)">0.12 - OK</span></div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(255,209,102,0.04);border:1px solid rgba(255,209,102,0.2);border-radius:8px;">
             <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent4);">rating_count</div>
-            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:18%;background:var(--accent4)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent4)">0.18 · DRIFT</span></div>
+            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:18%;background:var(--accent4)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent4)">0.18 - DRIFT</span></div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:8px;">
             <div style="font-family:var(--font-mono);font-size:11px;">category_id</div>
-            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:5%;background:var(--accent)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent)">0.05 · OK</span></div>
+            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:5%;background:var(--accent)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent)">0.05 - OK</span></div>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg);border-radius:8px;">
             <div style="font-family:var(--font-mono);font-size:11px;">sentiment_score</div>
-            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:9%;background:var(--accent)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent)">0.09 · OK</span></div>
+            <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:9%;background:var(--accent)"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:var(--accent)">0.09 - OK</span></div>
           </div>
           <div style="padding:12px;background:rgba(255,209,102,0.05);border:1px solid rgba(255,209,102,0.2);border-radius:10px;font-size:12px;line-height:1.6;color:var(--muted);">
             <span style="color:var(--accent4);font-weight:700;">Drift alert:</span> <code style="font-family:var(--font-mono)">rating_count</code> distribution shifted by 18%. Possible cause: new products with no reviews added this week. Recommend auto-retrain in 48h if drift persists.
@@ -819,10 +819,10 @@
         </div>
         <div class="panel">
           <div class="panel-head"><div class="panel-title">Endpoints health</div><div class="panel-tag tag-data">Live metrics</div></div>
-          <div id="endpoint-health-list" style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:11px;"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/predict_discount</span><span class="badge b-green">OK · 88ms</span></div>
-            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/answer_question</span><span class="badge b-green">OK · 340ms</span></div>
-            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/health</span><span class="badge b-green">OK · 4ms</span></div>
-            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/metrics</span><span class="badge b-green">OK · 12ms</span></div>
+          <div id="endpoint-health-list" style="display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:11px;"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/predict_discount</span><span class="badge b-green">OK - 88ms</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/answer_question</span><span class="badge b-green">OK - 340ms</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/health</span><span class="badge b-green">OK - 4ms</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">/metrics</span><span class="badge b-green">OK - 12ms</span></div>
           </div>
         </div>
       </div>
@@ -916,7 +916,7 @@ function renderCategoryDistribution(categories) {
     const value = Number(item.avg_predicted_discount || 0);
     const b = document.createElement('div');
     b.className = 'bar';
-    b.title = `${name}: ${value.toFixed(1)}% predicted avg · ${item.products} products`;
+    b.title = `${name}: ${value.toFixed(1)}% predicted avg - ${item.products} products`;
     b.style.cssText = `height:${(value / maxVal) * 100}%;background:${palette[i % palette.length]};opacity:0.85;`;
     bars.appendChild(b);
     const l = document.createElement('div');
@@ -939,17 +939,17 @@ function updateModelHealth(data) {
   if (!panel) return;
   const rows = panel.querySelectorAll('.gauge');
   const labels = panel.querySelectorAll('span');
-  const rmse = Number(data.rmse || 0);
-  const mae = Number(data.mae || 0);
-  const r2 = Number(data.r2 || 0);
+  const accuracy = Number(data.accuracy || 0);
+  const f1 = Number(data.f1_macro || 0);
+  const recall = Number(data.recall_macro || 0);
   if (labels.length >= 6) {
-    labels[1].textContent = rmse.toFixed(2);
-    labels[3].textContent = mae.toFixed(2);
-    labels[5].textContent = r2.toFixed(2);
+    labels[1].textContent = `${Math.round(accuracy * 100)}%`;
+    labels[3].textContent = f1.toFixed(2);
+    labels[5].textContent = recall.toFixed(2);
   }
-  if (rows[0]) rows[0].querySelector('.gauge-fill').style.width = `${Math.max(5, Math.min(100, 100 - rmse * 10))}%`;
-  if (rows[1]) rows[1].querySelector('.gauge-fill').style.width = `${Math.max(5, Math.min(100, 100 - mae * 10))}%`;
-  if (rows[2]) rows[2].querySelector('.gauge-fill').style.width = `${Math.max(5, Math.min(100, r2 * 100))}%`;
+  if (rows[0]) rows[0].querySelector('.gauge-fill').style.width = `${Math.max(5, Math.min(100, accuracy * 100))}%`;
+  if (rows[1]) rows[1].querySelector('.gauge-fill').style.width = `${Math.max(5, Math.min(100, f1 * 100))}%`;
+  if (rows[2]) rows[2].querySelector('.gauge-fill').style.width = `${Math.max(5, Math.min(100, recall * 100))}%`;
 }
 
 async function loadModelHealth() {
@@ -971,8 +971,8 @@ function renderReviewInsights(insights) {
     const bg = positive ? 'rgba(79,255,176,0.05)' : negative ? 'rgba(255,107,107,0.05)' : 'rgba(255,209,102,0.05)';
     const border = positive ? 'rgba(79,255,176,0.15)' : negative ? 'rgba(255,107,107,0.15)' : 'rgba(255,209,102,0.15)';
     return `<div style="padding:12px;background:${bg};border:1px solid ${border};border-radius:10px;">
-      <div style="font-family:var(--font-mono);font-size:10px;color:${color};margin-bottom:4px;">${String(item.label || 'mixed').toUpperCase()} · ${String(item.product_name || item.product_id).substring(0,42)}</div>
-      <div style="font-size:12px;line-height:1.6;color:var(--muted);">Score ${Number(item.sentiment_score || 0).toFixed(2)} · ${item.snippet || 'Review text unavailable.'}</div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:${color};margin-bottom:4px;">${String(item.label || 'mixed').toUpperCase()} - ${String(item.product_name || item.product_id).substring(0,42)}</div>
+      <div style="font-size:12px;line-height:1.6;color:var(--muted);">Score ${Number(item.sentiment_score || 0).toFixed(2)} - ${item.snippet || 'Review text unavailable.'}</div>
     </div>`;
   }).join('');
 }
@@ -992,7 +992,7 @@ function renderSegmentActions(actions) {
   target.innerHTML = actions.slice(0, 3).map((item, i) => {
     const colors = ['var(--accent)', 'var(--accent4)', 'var(--accent2)'];
     return `<div style="padding:14px;background:rgba(79,255,176,0.04);border-radius:10px;border:1px solid rgba(79,255,176,0.15);">
-      <div style="font-family:var(--font-mono);font-size:10px;color:${colors[i % colors.length]};margin-bottom:6px;">${String(item.label || 'SEGMENT').toUpperCase()} · ${item.products || 0} products</div>
+      <div style="font-family:var(--font-mono);font-size:10px;color:${colors[i % colors.length]};margin-bottom:6px;">${String(item.label || 'SEGMENT').toUpperCase()} - ${item.products || 0} products</div>
       <div style="font-size:12px;line-height:1.6;color:var(--muted);">${item.action}</div>
     </div>`;
   }).join('');
@@ -1052,7 +1052,7 @@ function renderMonitoring(data) {
       const warn = Number(score) >= Number(drift.threshold || 0.15);
       return `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:${warn ? 'rgba(255,209,102,0.04)' : 'var(--bg)'};border-radius:8px;">
         <div style="font-family:var(--font-mono);font-size:11px;${warn ? 'color:var(--accent4);' : ''}">${feature}</div>
-        <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:${Math.min(100, Number(score) * 100)}%;background:${warn ? 'var(--accent4)' : 'var(--accent)'}"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:${warn ? 'var(--accent4)' : 'var(--accent)'}">${Number(score).toFixed(2)} · ${warn ? 'DRIFT' : 'OK'}</span></div>
+        <div style="display:flex;align-items:center;gap:10px;"><div class="gauge" style="width:120px;margin-top:0;"><div class="gauge-fill" style="width:${Math.min(100, Number(score) * 100)}%;background:${warn ? 'var(--accent4)' : 'var(--accent)'}"></div></div><span style="font-family:var(--font-mono);font-size:10px;color:${warn ? 'var(--accent4)' : 'var(--accent)'}">${Number(score).toFixed(2)} - ${warn ? 'DRIFT' : 'OK'}</span></div>
       </div>`;
     }).join('');
   }
@@ -1065,7 +1065,7 @@ function renderMonitoring(data) {
   const endpoints = document.getElementById('endpoint-health-list');
   if (endpoints) {
     endpoints.innerHTML = (data.endpoint_rows || []).map(row =>
-      `<div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">${row.endpoint}</span><span class="badge b-green">OK · ${row.avg_latency_ms}ms · ${row.count}</span></div>`
+      `<div style="display:flex;justify-content:space-between;align-items:center;"><span style="color:var(--muted)">${row.endpoint}</span><span class="badge b-green">OK - ${row.avg_latency_ms}ms - ${row.count}</span></div>`
     ).join('') || '<div style="color:var(--muted)">No endpoint latency observed yet.</div>';
   }
 }
@@ -1095,12 +1095,12 @@ async function loadOverviewMetrics() {
     document.getElementById('overview-discount-meta').textContent = `${data.products_scored || 0} products scored`;
     document.getElementById('overview-sentiment').textContent = data.avg_sentiment_score == null ? 'N/A' : Number(data.avg_sentiment_score).toFixed(2);
     document.getElementById('overview-sentiment-meta').textContent = `${data.sentiment_sample_size || 0} review texts sampled`;
-    document.getElementById('overview-r2').textContent = data.model_r2 == null ? 'N/A' : Number(data.model_r2).toFixed(2);
-    document.getElementById('overview-r2-meta').textContent = data.model_rmse == null ? 'Saved evaluation metric' : `RMSE ${Number(data.model_rmse).toFixed(2)} · MAE ${Number(data.model_mae || 0).toFixed(2)}`;
-    document.getElementById('overview-rag').textContent = data.rag_factuality_rate == null ? 'N/A' : `${Math.round(Number(data.rag_factuality_rate) * 100)}%`;
-    document.getElementById('overview-rag-meta').textContent = data.rag_status || 'Needs evaluation set';
+    document.getElementById('overview-r2').textContent = data.model_accuracy == null ? 'N/A' : `${Math.round(Number(data.model_accuracy) * 100)}%`;
+    document.getElementById('overview-r2-meta').textContent = data.model_f1_macro == null ? 'Saved evaluation metric' : `F1 ${Number(data.model_f1_macro).toFixed(2)} - low/medium/high`;
+    document.getElementById('overview-traction').textContent = data.avg_market_traction == null ? 'N/A' : Number(data.avg_market_traction).toFixed(2);
+    document.getElementById('overview-traction-meta').textContent = data.market_traction_basis || 'Demand proxy across catalog';
   } catch (err) {
-    document.getElementById('overview-rag-meta').textContent = 'Overview API unavailable';
+    document.getElementById('overview-traction-meta').textContent = 'Overview API unavailable';
   }
 }
 loadOverviewMetrics();
@@ -1110,6 +1110,7 @@ function renderTopProducts(rows) {
   if (!body) return;
   body.innerHTML = rows.map(row => {
     const colorClass = row.flag_color === 'red' ? 'b-red' : row.flag_color === 'yellow' ? 'b-yellow' : 'b-green';
+    const tractionClass = row.market_traction_label === 'High' ? 'b-green' : row.market_traction_label === 'Low' ? 'b-red' : 'b-yellow';
     const scoreWidth = Math.round(Math.max(0, Math.min(1, (Number(row.sentiment_score || 0) + 1) / 2)) * 100);
     const product = row.product_name || row.product_id || 'Product';
     return `
@@ -1118,6 +1119,7 @@ function renderTopProducts(rows) {
         <td>${Math.round(Number(row.actual_discount || 0))}%</td>
         <td>${Math.round(Number(row.predicted_discount || 0))}%</td>
         <td><div class="score-bar"><div class="score-fill" style="width:${scoreWidth}%"></div></div></td>
+        <td><span class="badge ${tractionClass}" title="Score ${Number(row.market_traction_score || 0).toFixed(2)}">${row.market_traction_label || 'Med'}</span></td>
         <td><span class="badge ${colorClass}">${row.flag || 'Watch'}</span></td>
       </tr>
     `;
@@ -1209,7 +1211,7 @@ function renderRagTrace(data) {
   const rows = (data.retrieved || []).map(item => `
     <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:rgba(79,255,176,0.04);border:1px solid rgba(79,255,176,0.12);border-radius:8px;">
       <div style="min-width:0;">
-        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">#${item.rank} Â· ${item.product_id || 'product'} Â· ${item.category || 'catalog'}</div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">#${item.rank} - ${item.product_id || 'product'} - ${item.category || 'catalog'}</div>
         <div style="font-size:11px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.product_name || item.snippet || 'Retrieved chunk'}</div>
       </div>
       <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);white-space:nowrap;">sim ${Number(item.score || 0).toFixed(2)}</div>
@@ -1221,10 +1223,10 @@ function renderRagTrace(data) {
       <div style="color:var(--text);">"${data.query}"</div>
     </div>
     <div style="background:var(--bg);border-radius:8px;padding:12px;font-family:var(--font-mono);font-size:11px;">
-      <div style="color:var(--muted);margin-bottom:4px;">FILTERS Â· EMBEDDING Â· SEARCH</div>
+      <div style="color:var(--muted);margin-bottom:4px;">FILTERS - EMBEDDING - SEARCH</div>
       <div style="color:var(--accent);">filters: ${filters}</div>
-      <div style="color:var(--muted);margin-top:4px;">${data.embedding_model} Â· ${data.vector_store}</div>
-      <div style="color:var(--muted);margin-top:4px;">retrieved ${data.retrieved_count} chunks Â· min sim ${Number(data.min_similarity || 0).toFixed(2)} Â· generator ${data.generation_model}</div>
+      <div style="color:var(--muted);margin-top:4px;">${data.embedding_model} - ${data.vector_store}</div>
+      <div style="color:var(--muted);margin-top:4px;">retrieved ${data.retrieved_count} chunks - min sim ${Number(data.min_similarity || 0).toFixed(2)} - generator ${data.generation_model}</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:6px;">
       <div style="font-size:11px;font-weight:700;margin-bottom:4px;">Retrieved chunks</div>
@@ -1314,10 +1316,11 @@ async function runPrediction() {
 }
 
 // Chat
+let chatHistory = [];
 const responses = [
   { q: "worst-rated product", a: "The <strong>Bluetooth Speaker</strong> has the lowest sentiment score at 0.44, driven by 340+ negative reviews mentioning battery life and connectivity. Predicted discount is already at 60%, which is above model recommendation of 47%.", sources: ["review_data.csv", "model_output_v2.json"] },
   { q: "churn risk", a: "Key churn signals: <strong>rating_count drop</strong> (>30% decrease in 60 days), <strong>last purchase > 90 days ago</strong>, and <strong>support ticket filed</strong>. Your 'At Risk' segment (21%) shows all three. Recommended action: personalised win-back campaign within 7 days.", sources: ["customer_segments.pkl", "churn_model.pkl"] },
-  { q: "bundles", a: "For Electronics, high co-purchase affinity exists between: USB-C Hub + Laptop Stand (42% co-purchase rate), and Bluetooth Speaker + Phone Case (31%). Bundling at 5% combined discount is projected to lift AOV by ₹340.", sources: ["purchase_history.csv", "product_metadata.json"] },
+  { q: "bundles", a: "For Electronics, high co-purchase affinity exists between: USB-C Hub + Laptop Stand (42% co-purchase rate), and Bluetooth Speaker + Phone Case (31%). Bundling at 5% combined discount is projected to lift AOV by Rs.340.", sources: ["purchase_history.csv", "product_metadata.json"] },
 ];
 
 function sendChat() {
@@ -1327,7 +1330,7 @@ function sendChat() {
   const area = document.getElementById('chat-area');
   const userMsg = document.createElement('div');
   userMsg.className = 'msg msg-user';
-  userMsg.innerHTML = `<div class="msg-bubble">${val}</div><div class="msg-meta">You · just now</div>`;
+  userMsg.innerHTML = `<div class="msg-bubble">${val}</div><div class="msg-meta">You - just now</div>`;
   area.appendChild(userMsg);
   input.value = '';
   area.scrollTop = area.scrollHeight;
@@ -1336,7 +1339,7 @@ function sendChat() {
     const resp = match || { a: "I'm analysing your query against the product database and model outputs. Based on current data, I'd recommend checking the discount prediction and sentiment pages for the most relevant insights for your question.", sources: ["product_data.csv"] };
     const aiMsg = document.createElement('div');
     aiMsg.className = 'msg msg-ai';
-    aiMsg.innerHTML = `<div class="msg-bubble">${resp.a}<br><div style="margin-top:8px;">${resp.sources.map(s=>`<span class="source-pill">${s}</span>`).join('')}</div></div><div class="msg-meta">MarketIQ · grounded · ${resp.sources.length} source${resp.sources.length>1?'s':''}</div>`;
+    aiMsg.innerHTML = `<div class="msg-bubble">${resp.a}<br><div style="margin-top:8px;">${resp.sources.map(s=>`<span class="source-pill">${s}</span>`).join('')}</div></div><div class="msg-meta">MarketIQ - grounded - ${resp.sources.length} source${resp.sources.length>1?'s':''}</div>`;
     area.appendChild(aiMsg);
     area.scrollTop = area.scrollHeight;
   }, 800);
@@ -1347,29 +1350,34 @@ sendChat = async function() {
   const val = input.value.trim();
   if (!val) return;
   const area = document.getElementById('chat-area');
+  const requestHistory = chatHistory.slice(-6);
   const userMsg = document.createElement('div');
   userMsg.className = 'msg msg-user';
-  userMsg.innerHTML = `<div class="msg-bubble">${val}</div><div class="msg-meta">You Â· just now</div>`;
+  userMsg.innerHTML = `<div class="msg-bubble">${val}</div><div class="msg-meta">You - just now</div>`;
   area.appendChild(userMsg);
+  chatHistory.push({ role: 'user', content: val });
   input.value = '';
   const aiMsg = document.createElement('div');
   aiMsg.className = 'msg msg-ai';
-  aiMsg.innerHTML = `<div class="msg-bubble">Searching product context and generating a grounded answer...</div><div class="msg-meta">MarketIQ Â· working</div>`;
+  aiMsg.innerHTML = `<div class="msg-bubble">Searching product context and generating a grounded answer...</div><div class="msg-meta">MarketIQ - working with recent context</div>`;
   area.appendChild(aiMsg);
   area.scrollTop = area.scrollHeight;
   try {
     const res = await fetch(`${API_BASE}/answer_question`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question: val, top_k: 5 })
+      body: JSON.stringify({ question: val, top_k: 5, history: requestHistory })
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.detail || 'Assistant request failed');
-    const pills = (data.sources || []).slice(0, 4).map(s => `<span class="source-pill">${s.product_id || s.product_name || 'source'}</span>`).join('');
-    aiMsg.innerHTML = `<div class="msg-bubble">${data.answer}<br><div style="margin-top:8px;">${pills}</div></div><div class="msg-meta">MarketIQ Â· grounded Â· ${(data.sources || []).length} sources</div>`;
+    const pills = (data.sources || []).slice(0, 4).map(s => `<span class="source-pill">${s.product_name || s.product_id || 'source'}</span>`).join('');
+    aiMsg.innerHTML = `<div class="msg-bubble">${data.answer}<br><div style="margin-top:8px;">${pills}</div></div><div class="msg-meta">MarketIQ - grounded - ${(data.sources || []).length} sources</div>`;
+    chatHistory.push({ role: 'assistant', content: data.answer });
   } catch (err) {
-    aiMsg.innerHTML = `<div class="msg-bubble">API unavailable: ${err.message}</div><div class="msg-meta">MarketIQ Â· fallback</div>`;
+    aiMsg.innerHTML = `<div class="msg-bubble">API unavailable: ${err.message}</div><div class="msg-meta">MarketIQ - fallback</div>`;
+    chatHistory.push({ role: 'assistant', content: `API unavailable: ${err.message}` });
   }
+  chatHistory = chatHistory.slice(-8);
   area.scrollTop = area.scrollHeight;
 }
 
@@ -1380,3 +1388,5 @@ function quickQ(el) {
 </script>
 </body>
 </html>
+
+

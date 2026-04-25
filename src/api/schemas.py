@@ -19,6 +19,7 @@ class PredictResponse(BaseModel):
     model_config = {"protected_namespaces": ()}
 
     discount_pct: float
+    discount_band: str | None = None
     confidence: float
     model_version: str
     feature_signals: dict
@@ -34,6 +35,7 @@ class DemandResponse(BaseModel):
 class AskRequest(BaseModel):
     question: str = Field(..., min_length=3)
     top_k: int = Field(default=5, ge=1, le=10)
+    history: list[dict[str, str]] = Field(default_factory=list)
 
 
 class AskResponse(BaseModel):
